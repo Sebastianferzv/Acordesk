@@ -103,6 +103,16 @@
       transition: border-color .2s;
     }
     .sel-sm:focus { border-color: rgba(240,180,41,.45); outline: none; }
+    .sel-sm.warn {
+      border-color: rgba(240,180,41,.7);
+      color: #f0b429;
+      box-shadow: 0 0 0 2px rgba(240,180,41,.15);
+      animation: warn-pulse 2.2s ease-in-out infinite;
+    }
+    @keyframes warn-pulse {
+      0%,100% { box-shadow: 0 0 0 2px rgba(240,180,41,.12); }
+      50%      { box-shadow: 0 0 0 5px rgba(240,180,41,.22); }
+    }
 
     /* Standard select (key change) */
     .sel-wrap { position: relative; display: inline-block; }
@@ -681,10 +691,10 @@ Fmaj7   Em7b5  A7    Dm"
       <div class="preview-ctrl" id="kcControls">
         <button class="btn" onclick="adjPreviewSize(-1)">A−</button>
         <button class="btn" onclick="adjPreviewSize(+1)">A+</button>
-        <button class="btn btn-copy" id="btnCopyKC" onclick="copyPreview()">⎘ Copiar</button>
+        <button class="btn btn-copy" id="btnCopyKC" onclick="copyPreview()" title="Copiar"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
       </div>
       <div class="preview" id="kcOut">
-        <span class="empty-sm">Establece la tónica original (arriba a la derecha) y elige la nueva tónica para ver los acordes en la nueva tonalidad.</span>
+        <span class="empty-sm">Establece la tónica original y elige la nueva tónica para ver los acordes en la nueva tonalidad.</span>
       </div>
     </div>
   </div>
@@ -716,7 +726,7 @@ Fmaj7   Em7b5  A7    Dm"
         <span class="sep-ln"></span>
         <button class="btn" onclick="adjSize(-1)">A−</button>
         <button class="btn" onclick="adjSize(+1)">A+</button>
-        <button class="btn btn-copy" id="btnCopy" onclick="copyOut()">⎘ Copiar</button>
+        <button class="btn btn-copy" id="btnCopy" onclick="copyOut()" title="Copiar"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
       </div>
       <div id="instrOut">
         <div class="empty">Los acordes para el instrumento aparecerán aquí...</div>
@@ -1010,6 +1020,7 @@ function instrOff(key){ return key ? (12-nIdx(key))%12 : 0; }
 
 // ─── Render principal ─────────────────────────────────────────
 function renderAll(){
+  document.getElementById('origKey').classList.toggle('warn', !st.origKey);
   const raw = document.getElementById('chordInput').value;
   const ks  = keyShift();
   const io  = instrOff(st.instrKey);
@@ -1018,7 +1029,7 @@ function renderAll(){
   const kcOut = document.getElementById('kcOut');
   const kcHasContent = !!(st.origKey && st.targKey && raw.trim());
   if(!st.origKey || !st.targKey){
-    kcOut.innerHTML = '<span class="empty-sm">Establece la tónica original (arriba a la derecha) y elige la nueva tónica para ver los acordes en la nueva tonalidad.</span>';
+    kcOut.innerHTML = '<span class="empty-sm">Establece la tónica original y elige la nueva tónica para ver los acordes en la nueva tonalidad.</span>';
   } else {
     kcOut.innerHTML = buildHTML(raw, ks);
   }
@@ -1143,11 +1154,13 @@ function adjPreviewSize(dir){
   document.getElementById('kcOut').style.fontSize = st.previewSize+'rem';
 }
 
+const COPY_SVG = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>';
+
 function copyPreview(){
   navigator.clipboard.writeText(document.getElementById('kcOut').innerText).then(()=>{
     const btn = document.getElementById('btnCopyKC');
-    btn.textContent = '✓ Copiado';
-    setTimeout(()=>btn.textContent='⎘ Copiar', 1800);
+    btn.textContent = '✓';
+    setTimeout(()=>{ btn.innerHTML = COPY_SVG; }, 1800);
   });
 }
 
@@ -1155,8 +1168,8 @@ function copyOut(){
   const text = document.getElementById('instrOut').innerText;
   navigator.clipboard.writeText(text).then(()=>{
     const btn = document.getElementById('btnCopy');
-    btn.textContent = '✓ Copiado';
-    setTimeout(()=>btn.textContent='⎘ Copiar', 1800);
+    btn.textContent = '✓';
+    setTimeout(()=>{ btn.innerHTML = COPY_SVG; }, 1800);
   });
 }
 

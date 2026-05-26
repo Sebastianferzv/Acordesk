@@ -1,4 +1,4 @@
-const CACHE = 'acordesk-v1';
+const CACHE = 'acordesk-v4';
 const ASSETS = [
   './',
   './index.html',

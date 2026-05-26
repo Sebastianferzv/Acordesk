@@ -26,6 +26,12 @@
       --muted:       #94a3b8;
       --r:           14px;
       --rsm:         8px;
+      --out1:        #f0b429;
+      --out1-dim:    rgba(240,180,41,0.11);
+      --out2:        #fb923c;
+      --out2-dim:    rgba(251,146,60,0.11);
+      --out3:        #f87171;
+      --out3-dim:    rgba(248,113,113,0.11);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -295,17 +301,21 @@
       position: relative; cursor: default; transition: background .15s;
     }
     .cc:hover { background: rgba(78,205,196,.22); }
-    .cc[data-tip]::after {
-      content: attr(data-tip);
-      position: absolute; bottom: calc(100% + 4px); left: 50%;
+
+    .cc-d1 { color: var(--out1); background: var(--out1-dim); }
+    .cc-d1:hover { background: rgba(240,180,41,.22); }
+    .cc-d2 { color: var(--out2); background: var(--out2-dim); }
+    .cc-d2:hover { background: rgba(251,146,60,.22); }
+    .cc-d3 { color: var(--out3); background: var(--out3-dim); }
+    .cc-d3:hover { background: rgba(248,113,113,.22); }
+    .deg-lbl {
+      position: absolute; bottom: calc(100% + 2px); left: 50%;
       transform: translateX(-50%);
-      background: #0d1f1e; border: 1px solid rgba(78,205,196,.35);
-      color: var(--teal); font-size: .67rem; padding: 3px 10px;
-      border-radius: 4px; white-space: nowrap;
-      pointer-events: none; opacity: 0;
-      transition: opacity .15s; z-index: 10;
+      font-size: .54rem; font-weight: 700; letter-spacing: .2px;
+      color: var(--accent); white-space: nowrap;
+      line-height: 1; pointer-events: none;
     }
-    .cc[data-tip]:hover::after { opacity: 1; }
+    .deg-active { line-height: 3.2 !important; padding-top: 1em !important; }
     .ct { color: var(--dim); }
     .empty {
       color: var(--dim); font-family: 'Segoe UI',sans-serif;
@@ -316,6 +326,30 @@
       font-size: .82rem; font-style: italic;
     }
 
+    /* ── Vista previa rápida ─────────────────────── */
+    .qp-hdr {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px; margin-bottom: 10px; flex-wrap: wrap;
+    }
+    .quick-out {
+      background: rgba(0,0,0,.22);
+      border: 1px solid var(--border);
+      border-radius: var(--rsm);
+      padding: 11px 14px;
+      font-family: 'JetBrains Mono','Courier New', monospace;
+      font-size: 1.15rem; line-height: 2;
+      min-height: 44px;
+    }
+    .d-legend { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+    .d-leg {
+      font-size: .62rem; font-weight: 700;
+      padding: 2px 8px; border-radius: 4px; cursor: default;
+    }
+    .d-leg-0 { color: var(--teal); background: var(--teal-dim); }
+    .d-leg-1 { color: var(--out1); background: var(--out1-dim); }
+    .d-leg-2 { color: var(--out2); background: var(--out2-dim); }
+    .d-leg-3 { color: var(--out3); background: var(--out3-dim); }
+
     @media (max-width: 560px) {
       .hdr h1    { font-size: 1.5rem; }
       #instrOut  { font-size: 1.1rem; }
@@ -324,7 +358,7 @@
 
     /* ── Botón flotante Círculo de Quintas ───── */
     .btn-cof {
-      position: fixed; top: 72px; right: 18px; z-index: 100;
+      position: fixed; top: 126px; right: 18px; z-index: 100;
       width: 44px; height: 44px; border-radius: 50%;
       background: #1c2333;
       border: 1px solid rgba(255,255,255,.09);
@@ -341,7 +375,25 @@
       transform: scale(1.1);
     }
 
-    /* ── Botón flotante Manual ───────────────────── */
+    /* ── Botón flotante Diccionario ─────────────── */
+    .btn-dict {
+      position: fixed; top: 72px; right: 18px; z-index: 100;
+      width: 44px; height: 44px; border-radius: 50%;
+      background: #1c2333;
+      border: 1px solid rgba(255,255,255,.09);
+      color: #7ec8c8; font-size: 1.2rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 3px 12px rgba(0,0,0,.55);
+      transition: all .2s;
+    }
+    .btn-dict:hover {
+      background: rgba(78,205,196,.16);
+      border-color: rgba(78,205,196,.45);
+      transform: scale(1.1);
+    }
+
+    /* ── Botón flotante Instructivo ──────────────── */
     .btn-manual {
       position: fixed; top: 18px; right: 18px; z-index: 100;
       width: 44px; height: 44px; border-radius: 50%;
@@ -607,8 +659,10 @@
 
 <!-- Botón flotante Canciones -->
 <button class="btn-sidebar" onclick="toggleSidebar()" title="Canciones guardadas">☰</button>
-<!-- Botón flotante Manual -->
-<button class="btn-manual" onclick="toggleManual()" title="Manual de acordes">?</button>
+<!-- Botón flotante Instructivo -->
+<button class="btn-manual" onclick="toggleGuide()" title="Cómo usar AcorDesk">?</button>
+<!-- Botón flotante Diccionario de acordes -->
+<button class="btn-dict" onclick="toggleManual()" title="Diccionario de acordes">📖</button>
 <!-- Botón flotante círculo de quintas -->
 <button class="btn-cof" onclick="toggleCircle()" title="Círculo de Quintas">5ª</button>
 
@@ -659,6 +713,23 @@ Fmaj7   Em7b5  A7    Dm"
     ></textarea>
   </div>
 
+  <!-- ─── 1.5. Vista previa ────────────────────────────── -->
+  <div class="card">
+    <div class="qp-hdr">
+      <span class="clabel">Vista previa</span>
+    </div>
+    <div class="out-controls" style="margin-bottom:8px;">
+      <button class="btn btn-deg" id="btnDegQP" onclick="toggleDeg()" title="Mostrar grados">I ii</button>
+      <span class="sep-ln"></span>
+      <button class="btn" onclick="adjSizeQP(-1)">A−</button>
+      <button class="btn" onclick="adjSizeQP(+1)">A+</button>
+      <button class="btn btn-copy" id="btnCopyQP" onclick="copyQP()" title="Copiar"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+    </div>
+    <div id="quickOut" class="quick-out">
+      <span class="empty-sm">Escribe acordes arriba...</span>
+    </div>
+  </div>
+
   <!-- ─── 2. Transponer button ───────────────────────── -->
   <div class="btn-row">
     <button class="btn-trans" id="btnTrans" onclick="toggleKeyChange()">
@@ -689,6 +760,8 @@ Fmaj7   Em7b5  A7    Dm"
         </div>
       </div>
       <div class="preview-ctrl" id="kcControls">
+        <button class="btn btn-deg" id="btnDegKC" onclick="toggleDeg()" title="Mostrar grados">I ii</button>
+        <span class="sep-ln"></span>
         <button class="btn" onclick="adjPreviewSize(-1)">A−</button>
         <button class="btn" onclick="adjPreviewSize(+1)">A+</button>
         <button class="btn btn-copy" id="btnCopyKC" onclick="copyPreview()" title="Copiar"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
@@ -724,6 +797,8 @@ Fmaj7   Em7b5  A7    Dm"
         <button class="btn active" id="btnFlat"  onclick="setAcc('flat')">♭ Bemoles</button>
         <button class="btn"        id="btnSharp" onclick="setAcc('sharp')">♯ Sostenidos</button>
         <span class="sep-ln"></span>
+        <button class="btn btn-deg" id="btnDegInstr" onclick="toggleDeg()" title="Mostrar grados">I ii</button>
+        <span class="sep-ln"></span>
         <button class="btn" onclick="adjSize(-1)">A−</button>
         <button class="btn" onclick="adjSize(+1)">A+</button>
         <button class="btn btn-copy" id="btnCopy" onclick="copyOut()" title="Copiar"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
@@ -744,6 +819,61 @@ Fmaj7   Em7b5  A7    Dm"
       <button class="modal-close" onclick="toggleCircle()">✕</button>
     </div>
     <svg id="cofSVG" viewBox="0 0 400 400" width="100%" style="display:block;"></svg>
+  </div>
+</div>
+
+<!-- Modal Instructivo -->
+<div class="modal-ov" id="guideModal" onclick="onGuideBg(event)">
+  <div class="modal-box" style="width:min(520px,94vw);">
+    <div class="modal-hdr">
+      <span class="modal-title">Cómo usar AcorDesk</span>
+      <button class="modal-close" onclick="toggleGuide()">✕</button>
+    </div>
+    <div class="manual-body">
+
+      <div class="manual-section">
+        <h3>¿Qué es AcorDesk?</h3>
+        <p>Traductor de acordes. Escribes los acordes de una canción en concert pitch y la app los transpone a cualquier tonalidad o instrumento.</p>
+      </div>
+
+      <div class="manual-section">
+        <h3>Tónica de la canción</h3>
+        <p>Selecciona la tónica en el selector junto al área de entrada. Esto activa el análisis de color y los grados de la tonalidad en todos los contenedores.</p>
+      </div>
+
+      <div class="manual-section">
+        <h3>Colores de los acordes</h3>
+        <p>Cada acorde se colorea según cuántas de sus notas están fuera de la tonalidad:</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 6px;">
+          <span class="d-leg d-leg-0">Diatónico</span>
+          <span class="d-leg d-leg-1">1 nota fuera</span>
+          <span class="d-leg d-leg-2">2 notas fuera</span>
+          <span class="d-leg d-leg-3">3+ notas fuera</span>
+        </div>
+        <p>Al pasar el mouse sobre un acorde, aparecen sus notas coloreadas: <span style="color:#4ecdc4;font-weight:700">en tonalidad</span> / <span style="color:#f87171;font-weight:700">fuera</span>.</p>
+      </div>
+
+      <div class="manual-section">
+        <h3>Grados de la tonalidad (I ii III…)</h3>
+        <p>Activa el botón <code>I ii</code> en cualquier contenedor para ver el grado romano encima de cada acorde. Mayúscula = mayor/dominante, minúscula = menor/disminuido. <code>b</code> indica grado cromático (ej: <code>bVII</code>).</p>
+      </div>
+
+      <div class="manual-section">
+        <h3>Cambiar tonalidad</h3>
+        <p>Expande <strong>Cambiar tonalidad</strong> y elige la nueva tónica. Los acordes se transponen en ese contenedor sin afectar la vista previa.</p>
+      </div>
+
+      <div class="manual-section">
+        <h3>Transponer a instrumento</h3>
+        <p>Expande <strong>Transponer a instrumento</strong> y elige tu instrumento. La app calcula la transposición para que el músico suene en concert pitch.</p>
+      </div>
+
+      <div class="manual-section">
+        <h3>Guardar canciones</h3>
+        <p>Escribe el nombre arriba y presiona <strong>Guardar</strong>. Accede a canciones guardadas con <strong>☰</strong>.</p>
+      </div>
+
+    </div>
   </div>
 </div>
 
@@ -833,6 +963,8 @@ Fmaj7   Em7b5  A7    Dm"
   </div>
 </div>
 
+<div id="noteTip" style="position:fixed;display:none;z-index:9999;background:#0a1628;border:1px solid rgba(78,205,196,.3);padding:5px 12px;border-radius:5px;font-family:'JetBrains Mono','Courier New',monospace;font-weight:700;font-size:.68rem;pointer-events:none;white-space:nowrap;transition:opacity .12s;"></div>
+
 <script>
 // ─── Constantes musicales ────────────────────────────────────
 const NOTE_IDX = {
@@ -844,6 +976,22 @@ const NOTE_IDX = {
 const FLAT_N  = ['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B'];
 const SHARP_N = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
 const ALL_KEYS = ['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B'];
+const MAJOR_SCALE = [0,2,4,5,7,9,11];
+const DEGREES = ['I','bII','II','bIII','III','IV','bV','V','bVI','VI','bVII','VII'];
+
+function chordDegree(tok, key){
+  if(!key) return '';
+  const p=parseChord(tok); if(!p) return '';
+  const ri=nIdx(p.root), ki=nIdx(key);
+  if(ri===-1||ki===-1) return '';
+  const ivl=((ri-ki)+12)%12;
+  let d=DEGREES[ivl];
+  const q=p.quality;
+  if(q && ((q[0]==='m' && !q.toLowerCase().startsWith('maj')) ||
+     q.includes('°') || q.toLowerCase().includes('dim') || q[0]==='ø'))
+    d=d.toLowerCase();
+  return d;
+}
 
 const INSTRUMENTS = [
   { key:'C',  lbl:'Real'       },
@@ -871,6 +1019,8 @@ const st = {
   previewSize:     1.1,
   accPref:      'flat',
   fontSize:     1.45,
+  qpSize:       1.15,
+  showDeg:      false,
 };
 
 // ─── Helpers de nota ─────────────────────────────────────────
@@ -971,6 +1121,23 @@ function chordNotes(chordTok, semi){
   return notes;
 }
 
+// ─── Análisis diatónico ──────────────────────────────────────
+function scaleNoteSet(key){
+  if(!key) return null;
+  const root=nIdx(key); if(root===-1) return null;
+  const s=new Set();
+  MAJOR_SCALE.forEach(iv=>s.add((root+iv)%12));
+  return s;
+}
+function outsideCount(chordTok, scaleSet){
+  if(!scaleSet) return -1;
+  const notes=chordNotes(chordTok,0);
+  if(!notes) return -1;
+  let n=0;
+  for(const note of notes){ const i=nIdx(note); if(i!==-1 && !scaleSet.has(i)) n++; }
+  return n;
+}
+
 // ─── Tokenizador ─────────────────────────────────────────────
 function tokenize(line){
   const toks=[];
@@ -989,7 +1156,27 @@ function tokenize(line){
 // ─── Construcción de HTML de acordes ─────────────────────────
 function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-function buildHTML(raw, semi){
+function showNoteTip(cc){
+  const tip = document.getElementById('noteTip');
+  if(!cc || !cc.dataset.nt){ tip.style.display='none'; return; }
+  const notes = cc.dataset.nt.split(',');
+  const keys  = cc.dataset.nk ? cc.dataset.nk.split(',') : null;
+  tip.innerHTML = notes.map((n,i) => {
+    const inKey = !keys || keys[i]==='1';
+    return '<span style="color:' + (inKey ? '#4ecdc4' : '#f87171') + '">' + esc(n) + '</span>';
+  }).join('<span style="color:#64748b"> · </span>');
+  if     (cc.classList.contains('cc-d3')) tip.style.borderColor='rgba(248,113,113,.5)';
+  else if(cc.classList.contains('cc-d2')) tip.style.borderColor='rgba(251,146,60,.5)';
+  else if(cc.classList.contains('cc-d1')) tip.style.borderColor='rgba(240,180,41,.5)';
+  else                                    tip.style.borderColor='rgba(78,205,196,.35)';
+  const r = cc.getBoundingClientRect();
+  tip.style.left = (r.left + r.width/2) + 'px';
+  tip.style.top  = (r.top - 6) + 'px';
+  tip.style.transform = 'translate(-50%,-100%)';
+  tip.style.display = 'block';
+}
+
+function buildHTML(raw, semi, scaleSet=null, showDeg=false){
   if(!raw.trim())
     return '<span class="empty-sm">Ingresa acordes arriba para ver los resultados.</span>';
   return raw.split('\n').map(line=>{
@@ -999,9 +1186,23 @@ function buildHTML(raw, semi){
       if(tok.t==='chord'){
         const tc=trChord(tok.v,semi);
         if(!tc) return `<span class="ct">${esc(tok.v)}${esc(tok.trail)}</span>`;
-        const notes=chordNotes(tok.v,semi);
-        const tip=notes?` data-tip="${notes.join(' · ')}"` :'';
-        return `<span class="cc"${tip}>${esc(tc)}</span>`
+        let cls='cc';
+        if(scaleSet){
+          const out=outsideCount(tok.v,scaleSet);
+          if(out===1)      cls='cc cc-d1';
+          else if(out===2) cls='cc cc-d2';
+          else if(out>2)   cls='cc cc-d3';
+        }
+        const dN=chordNotes(tok.v,semi), oN=chordNotes(tok.v,0);
+        let ta='';
+        if(dN && dN.length){
+          ta=' data-nt="'+dN.join(',')+'"';
+          if(scaleSet && oN)
+            ta+=' data-nk="'+oN.map(n=>{const x=nIdx(n);return(x!==-1&&scaleSet.has(x))?'1':'0';}).join(',')+'"';
+        }
+        const degSpan = (showDeg && st.origKey)
+          ? '<span class="deg-lbl">'+chordDegree(tok.v, st.origKey)+'</span>' : '';
+        return `<span class="${cls}"${ta}>${degSpan}${esc(tc)}</span>`
               +(tok.trail?`<span class="ct">${esc(tok.trail)}</span>`:'');
       }
       return `<span class="ct">${esc(tok.v)}</span>`;
@@ -1024,6 +1225,18 @@ function renderAll(){
   const raw = document.getElementById('chordInput').value;
   const ks  = keyShift();
   const io  = instrOff(st.instrKey);
+  const scaleSet = scaleNoteSet(st.origKey);
+
+  // — Vista previa rápida —
+  const qOut = document.getElementById('quickOut');
+  const degOn = st.showDeg && !!st.origKey;
+  ['quickOut','kcOut','instrOut'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.classList.toggle('deg-active', degOn);
+  });
+
+  qOut.innerHTML = raw.trim()
+    ? buildHTML(raw, 0, scaleSet, st.showDeg)
+    : '<span class="empty-sm">Escribe acordes arriba...</span>';
 
   // — Cambiar tonalidad preview —
   const kcOut = document.getElementById('kcOut');
@@ -1031,7 +1244,7 @@ function renderAll(){
   if(!st.origKey || !st.targKey){
     kcOut.innerHTML = '<span class="empty-sm">Establece la tónica original y elige la nueva tónica para ver los acordes en la nueva tonalidad.</span>';
   } else {
-    kcOut.innerHTML = buildHTML(raw, ks);
+    kcOut.innerHTML = buildHTML(raw, ks, scaleSet, st.showDeg);
   }
   document.getElementById('kcControls').style.display = kcHasContent ? 'flex' : 'none';
   renderKCBadges(ks);
@@ -1041,7 +1254,7 @@ function renderAll(){
   if(!raw.trim()){
     iOut.innerHTML = '<div class="empty">Los acordes para el instrumento aparecerán aquí...</div>';
   } else {
-    iOut.innerHTML = buildHTML(raw, ks + io);
+    iOut.innerHTML = buildHTML(raw, ks + io, scaleSet, st.showDeg);
   }
   renderInstrInfo(ks, io);
 }
@@ -1290,10 +1503,16 @@ function onModalBg(e){
 function toggleManual(){
   document.getElementById('manualModal').classList.toggle('open');
 }
-
 function onManualBg(e){
   if(e.target === document.getElementById('manualModal'))
     document.getElementById('manualModal').classList.remove('open');
+}
+function toggleGuide(){
+  document.getElementById('guideModal').classList.toggle('open');
+}
+function onGuideBg(e){
+  if(e.target === document.getElementById('guideModal'))
+    document.getElementById('guideModal').classList.remove('open');
 }
 
 // ─── Canciones guardadas (localStorage) ──────────────────────
@@ -1441,6 +1660,37 @@ function onSidebarBg(e){
   if(e.target === document.getElementById('sidebarOv'))
     document.getElementById('sidebarOv').classList.remove('open');
 }
+
+// ─── Grados de la tonalidad ──────────────────────────────────
+function toggleDeg(){
+  st.showDeg = !st.showDeg;
+  document.querySelectorAll('.btn-deg').forEach(b=>b.classList.toggle('active', st.showDeg));
+  renderAll();
+}
+
+function adjSizeQP(dir){
+  st.qpSize = Math.max(.75, Math.min(3.5, st.qpSize + dir*.15));
+  document.getElementById('quickOut').style.fontSize = st.qpSize+'rem';
+}
+
+function copyQP(){
+  navigator.clipboard.writeText(document.getElementById('quickOut').innerText).then(()=>{
+    const btn=document.getElementById('btnCopyQP');
+    btn.textContent='✓';
+    setTimeout(()=>{ btn.innerHTML=COPY_SVG; }, 1800);
+  });
+}
+
+// ─── Tooltip flotante de notas ───────────────────────────────
+document.addEventListener('mouseover', function(e){
+  const cc = e.target.closest('.cc');
+  if(cc && cc.dataset.nt) showNoteTip(cc);
+});
+document.addEventListener('mouseout', function(e){
+  const cc = e.target.closest('.cc');
+  if(!cc || !cc.contains(e.relatedTarget))
+    document.getElementById('noteTip').style.display='none';
+});
 
 // ─── Service Worker ───────────────────────────────────────────
 if('serviceWorker' in navigator){

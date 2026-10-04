@@ -1,4 +1,4 @@
-const CACHE = 'acordesk-v4';
+const CACHE = 'acordesk-v5';
 const ASSETS = [
   './',
   './index.html',
@@ -24,6 +24,19 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
+  // HTML: red primero (para ver siempre la última versión), caché si no hay conexión
+  if (e.request.mode === 'navigate') {
+    e.respondWith(
+      fetch(e.request)
+        .then(r => {
+          const copy = r.clone();
+          caches.open(CACHE).then(c => c.put('./index.html', copy));
+          return r;
+        })
+        .catch(() => caches.match('./index.html'))
+    );
+    return;
+  }
   e.respondWith(
     caches.match(e.request).then(r => r || fetch(e.request))
   );

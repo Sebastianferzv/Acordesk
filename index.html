@@ -976,6 +976,8 @@ const NOTE_IDX = {
 const FLAT_N  = ['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B'];
 const SHARP_N = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
 const ALL_KEYS = ['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B'];
+const REL_MINOR = {C:'Am',Db:'Bbm',D:'Bm',Eb:'Cm',E:'C#m',F:'Dm',Gb:'Ebm',G:'Em',Ab:'Fm',A:'F#m',Bb:'Gm',B:'G#m'};
+const keyLabel = k => k ? `${k} / ${REL_MINOR[k]}` : '';
 const MAJOR_SCALE = [0,2,4,5,7,9,11];
 const DEGREES = ['I','bII','II','bIII','III','IV','bV','V','bVI','VI','bVII','VII'];
 
@@ -1265,7 +1267,7 @@ function renderKCBadges(ks){
   if(!st.origKey || !st.targKey){ el.textContent=''; return; }
   if(ks===0){ el.textContent='sin cambio'; return; }
   const n = ks<=6 ? ks : 12-ks;
-  el.textContent = `${st.origKey} → ${st.targKey}  (${ks<=6?'+':'-'}${n} st)`;
+  el.textContent = `${keyLabel(st.origKey)} → ${keyLabel(st.targKey)}  (${ks<=6?'+':'-'}${n} st)`;
 }
 
 // ─── Info de instrumento ──────────────────────────────────────
@@ -1310,7 +1312,7 @@ function onOrigKeyChange(){
 
   // Actualizar label estático en sección de cambio
   const stat = document.getElementById('origStatic');
-  stat.textContent = st.origKey || '—';
+  stat.textContent = keyLabel(st.origKey) || '—';
   stat.classList.toggle('set', !!st.origKey);
 
   // Habilitar / deshabilitar nueva tónica
@@ -1389,7 +1391,7 @@ function copyOut(){
 // ─── Inicialización ───────────────────────────────────────────
 function populateSel(id){
   const sel = document.getElementById(id);
-  ALL_KEYS.forEach(n=>sel.add(new Option(n,n)));
+  ALL_KEYS.forEach(n=>sel.add(new Option(keyLabel(n),n)));
 }
 populateSel('origKey');
 populateSel('targKey');
@@ -1572,7 +1574,7 @@ function openSong(id){
   // origKey select + static label
   document.getElementById('origKey').value = st.origKey;
   const stat = document.getElementById('origStatic');
-  stat.textContent = st.origKey || '—';
+  stat.textContent = keyLabel(st.origKey) || '—';
   stat.classList.toggle('set', !!st.origKey);
 
   // targKey select

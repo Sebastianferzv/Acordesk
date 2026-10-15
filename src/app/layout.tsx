@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Jost } from "next/font/google";
+import { ProveedorPWA } from "@/ui/ProveedorPWA";
 import { SCRIPT_TEMA } from "@/ui/temaScript";
 import "./globals.css";
 
@@ -31,7 +32,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {/* Aplica el tema guardado antes del primer pintado, para que no parpadee. */}
         <script dangerouslySetInnerHTML={{ __html: SCRIPT_TEMA }} />
       </head>
-      <body>{children}</body>
+      <body>
+        <ProveedorPWA>{children}</ProveedorPWA>
+      </body>
     </html>
   );
 }

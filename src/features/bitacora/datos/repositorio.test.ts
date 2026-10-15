@@ -35,7 +35,7 @@ describe("repositorio", () => {
     const e = await ensayos.crear({ fecha: "2026-10-14" });
     await ensayos.borrar(e.id);
     expect(await ensayos.listar()).toEqual([]);
-    expect((await ensayos.obtener(e.id))?.borradoEn).not.toBeNull();
+    expect(await ensayos.obtener(e.id)).toBeNull();
 
     await ensayos.restaurar(e.id);
     expect((await ensayos.listar()).map((x) => x.id)).toEqual([e.id]);

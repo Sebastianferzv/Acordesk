@@ -4,7 +4,7 @@ import { Forma } from "@/ui/Forma";
 import { IconoAjustes } from "@/ui/Iconos";
 
 /** Cabecera de la portada, a modo de afiche Bauhaus: título, fecha de hoy y acceso a Ajustes. */
-export function CabeceraBitacora({ hoy }: { hoy: string | null }) {
+export function CabeceraBitacora({ hoy, subtitulo }: { hoy: string | null; subtitulo: string }) {
   const f = hoy ? partesFecha(hoy) : null;
   return (
     <header className="px-4 pt-[calc(env(safe-area-inset-top)+1rem)]">
@@ -19,7 +19,7 @@ export function CabeceraBitacora({ hoy }: { hoy: string | null }) {
             <Forma tipo="circulo" relleno="rojo" trazo="ninguno" tamano={16} />
             <Forma tipo="triangulo" relleno="amarillo" trazo="ninguno" tamano={16} />
             <Forma tipo="cuadrado" relleno="azul" trazo="ninguno" tamano={16} />
-            <span className="etiqueta ml-2 text-[0.65rem] text-tinta-suave">Ensayos · saxo alto</span>
+            <span className="etiqueta ml-2 text-[0.65rem] text-tinta-suave">{subtitulo}</span>
           </div>
         </div>
         <div className="flex w-[5.25rem] shrink-0 flex-col border-l-[3px] border-linea">

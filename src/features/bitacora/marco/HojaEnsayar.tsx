@@ -1,9 +1,13 @@
 "use client";
 
-import { useAviso } from "@/ui/Aviso";
+import { useRouter } from "next/navigation";
+import { fechaLocal } from "@/lib/fechas";
 import { Forma, type ColorBauhaus, type TipoForma } from "@/ui/Forma";
 import { Hoja } from "@/ui/Hoja";
 import { IconoFlecha } from "@/ui/Iconos";
+import { iniciarCronometro } from "../datos/cronometro";
+import { pedirPersistencia } from "../datos/persistencia";
+import { ensayos } from "../datos/repositorio";
 
 interface Props {
   abierta: boolean;
@@ -12,12 +16,21 @@ interface Props {
 
 /** Hoja del botón central: iniciar el cronómetro o registrar un ensayo. */
 export function HojaEnsayar({ abierta, onCerrar }: Props) {
-  const avisar = useAviso();
+  const router = useRouter();
 
-  // Fase 0: las acciones llegan en la fase 1.
-  const pronto = () => {
+  // Los registros se crean en el toque (nunca en un efecto), para no duplicarlos.
+  const iniciar = async () => {
+    await iniciarCronometro(fechaLocal());
     onCerrar();
-    avisar({ texto: "Disponible en la fase 1." });
+    router.push("/bitacora/cronometro");
+    void pedirPersistencia();
+  };
+
+  const registrar = async () => {
+    const ensayo = await ensayos.crear({ fecha: fechaLocal() });
+    onCerrar();
+    router.push(`/bitacora/ensayo?id=${ensayo.id}`);
+    void pedirPersistencia();
   };
 
   return (
@@ -28,14 +41,14 @@ export function HojaEnsayar({ abierta, onCerrar }: Props) {
           color="rojo"
           titulo="Iniciar cronómetro"
           detalle="Mide el ensayo mientras tocas."
-          onClick={pronto}
+          onClick={() => void iniciar()}
         />
         <Opcion
           forma="cuadrado"
           color="azul"
           titulo="Registrar ensayo"
           detalle="Anota el de hoy o uno que ya hiciste."
-          onClick={pronto}
+          onClick={() => void registrar()}
         />
       </div>
     </Hoja>

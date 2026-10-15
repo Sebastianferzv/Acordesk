@@ -5,6 +5,9 @@ import { usePathname } from "next/navigation";
 import { cx } from "@/ui/cx";
 import { Forma, VAR_COLOR, type ColorBauhaus, type TipoForma } from "@/ui/Forma";
 import { IconoMas } from "@/ui/Iconos";
+import { useAhora } from "@/lib/useAhora";
+import { formatoReloj, tiempoTranscurrido } from "../datos/cronometro";
+import type { Cronometro } from "../datos/tipos";
 
 interface Pestana {
   href: string;
@@ -29,8 +32,9 @@ function estaActiva(pestana: Pestana, ruta: string) {
   return [pestana.href, ...pestana.rutas].some((r) => r !== "/bitacora" && ruta.startsWith(r));
 }
 
-export function BarraNavegacion({ onEnsayar }: { onEnsayar: () => void }) {
+export function BarraNavegacion({ onEnsayar, cronometro }: { onEnsayar: () => void; cronometro: Cronometro | null }) {
   const ruta = usePathname();
+  const ahora = useAhora(cronometro !== null && cronometro.tramoDesde !== null);
 
   const pestana = (p: Pestana) => {
     const activa = estaActiva(p, ruta);
@@ -75,10 +79,16 @@ export function BarraNavegacion({ onEnsayar }: { onEnsayar: () => void }) {
             <button
               type="button"
               onClick={onEnsayar}
-              aria-label="Ensayar"
+              aria-label={cronometro ? "Ir al cronómetro" : "Ensayar"}
               className="-mt-6 inline-flex size-[4.25rem] items-center justify-center rounded-full border-[3px] border-linea bg-rojo text-sobre-color transition-transform active:scale-95"
             >
-              <IconoMas tamano={26} />
+              {cronometro ? (
+                <span className="text-sm font-bold tabular-nums">
+                  {formatoReloj(tiempoTranscurrido(cronometro, ahora))}
+                </span>
+              ) : (
+                <IconoMas tamano={26} />
+              )}
             </button>
           </div>
           {DERECHA.map(pestana)}

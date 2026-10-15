@@ -37,7 +37,7 @@ export function Encabezado({ titulo, forma, volverA, acciones, subtitulo }: Prop
               className="mb-0.5 shrink-0"
             />
           )}
-          <h1 className="titulo-bauhaus truncate text-[2.1rem]">{titulo}</h1>
+          <h1 className="titulo-bauhaus truncate pt-[0.14em] text-[2.1rem] leading-[1.02]">{titulo}</h1>
         </div>
         {acciones && <div className="flex shrink-0 items-center gap-2">{acciones}</div>}
       </div>

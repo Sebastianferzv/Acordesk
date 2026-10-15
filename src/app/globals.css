@@ -1,0 +1,137 @@
+@import "tailwindcss";
+
+/* El tema oscuro se activa con data-theme="dark" en <html> (ver layout.tsx). */
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+/* ── Paleta Bauhaus ───────────────────────────────────────────── */
+:root {
+  --fondo: #f1e9d8;
+  --superficie: #fbf7ee;
+  --hundido: #e4d9c3;
+  --tinta: #16130f;
+  --tinta-suave: #5e574c;
+  --linea: #16130f;
+  --rojo: #cf3427;
+  --amarillo: #f2b42c;
+  --azul: #1e4fa3;
+  --sobre-color: #fbf7ee;
+  --sobre-amarillo: #16130f;
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --fondo: #121110;
+  --superficie: #1c1a17;
+  --hundido: #2a2723;
+  --tinta: #f1e9d8;
+  --tinta-suave: #a89f90;
+  --linea: #f1e9d8;
+  --rojo: #d6392b;
+  --amarillo: #f5c03e;
+  --azul: #3b6bd0;
+  --sobre-color: #fbf7ee;
+  --sobre-amarillo: #16130f;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-fondo: var(--fondo);
+  --color-superficie: var(--superficie);
+  --color-hundido: var(--hundido);
+  --color-tinta: var(--tinta);
+  --color-tinta-suave: var(--tinta-suave);
+  --color-linea: var(--linea);
+  --color-rojo: var(--rojo);
+  --color-amarillo: var(--amarillo);
+  --color-azul: var(--azul);
+  --color-sobre-color: var(--sobre-color);
+  --color-sobre-amarillo: var(--sobre-amarillo);
+  --font-sans: var(--font-jost), ui-sans-serif, system-ui, sans-serif;
+}
+
+@theme {
+  --animate-subir: subir 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+  --animate-aparecer: aparecer 0.18s ease-out;
+  --animate-latido: latido 1.6s ease-in-out infinite;
+
+  @keyframes subir {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  @keyframes aparecer {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes latido {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.06);
+    }
+  }
+}
+
+/* ── Utilidades propias ───────────────────────────────────────── */
+@utility borde {
+  border: 3px solid var(--linea);
+}
+
+@utility etiqueta {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+@utility titulo-bauhaus {
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 0.92;
+}
+
+/* ── Base ─────────────────────────────────────────────────────── */
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background: var(--fondo);
+    color: var(--tinta);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior-y: none;
+  }
+
+  button,
+  [role="button"] {
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--azul);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

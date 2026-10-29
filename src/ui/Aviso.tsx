@@ -37,7 +37,7 @@ export function ProveedorAvisos({ children }: { children: ReactNode }) {
         {aviso && (
           <div
             key={aviso.id}
-            className="pointer-events-auto flex w-full max-w-[608px] animate-aparecer items-center justify-between gap-4 border-[3px] border-linea bg-tinta px-4 py-3 text-fondo"
+            className="pointer-events-auto flex w-full max-w-[608px] animate-aparecer rounded-[var(--radio)] items-center justify-between gap-4 bg-tinta px-4 py-3 shadow-lg text-fondo"
           >
             <span className="text-sm font-medium">{aviso.texto}</span>
             {aviso.accion && (

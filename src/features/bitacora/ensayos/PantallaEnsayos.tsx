@@ -4,11 +4,9 @@ import { useLiveQuery } from "dexie-react-hooks";
 import Link from "next/link";
 import { partesFecha } from "@/lib/fechas";
 import { useHoy } from "@/lib/useHoy";
-import { nombreInstrumento } from "@/lib/teoria/notas";
 import { EstadoVacio } from "@/ui/EstadoVacio";
 import { Forma } from "@/ui/Forma";
 import { IconoFlecha } from "@/ui/Iconos";
-import { useAjustes } from "../ajustes/ajustes";
 import { useEnsayos, useGrabaciones } from "../datos/hooks";
 import { diasDesdeUltimoRespaldo } from "../datos/respaldo";
 import type { Ensayo } from "../datos/tipos";
@@ -22,7 +20,6 @@ export function PantallaEnsayos() {
   const hoy = useHoy();
   const ensayos = useEnsayos();
   const grabaciones = useGrabaciones() ?? [];
-  const { instrumento } = useAjustes();
   const diasSinRespaldo = useLiveQuery(() => diasDesdeUltimoRespaldo(), []);
 
   const pedirRespaldo =
@@ -33,37 +30,36 @@ export function PantallaEnsayos() {
 
   return (
     <>
-      <CabeceraBitacora hoy={hoy} subtitulo={`Ensayos · ${nombreInstrumento(instrumento).toLowerCase()}`} />
-      <div className="space-y-3 px-4 pt-4">
+      <CabeceraBitacora hoy={hoy} />
+      <div className="px-5 pt-6">
         <Resumen ensayos={ensayos ?? []} hoy={hoy} />
         {pedirRespaldo && (
           <Link
             href="/bitacora/ajustes"
-            className="flex items-center justify-between gap-3 border-[3px] border-linea bg-superficie p-3 text-sm font-medium"
+            className="mt-3 flex items-center justify-between gap-3 border-2 border-sutil bg-superficie px-4 py-3.5 text-[0.95rem]"
           >
             <span className="flex items-center gap-2">
-              <Forma tipo="triangulo" relleno="rojo" trazo="ninguno" tamano={16} />
+              <Forma tipo="triangulo" relleno="rojo" trazo="ninguno" tamano={12} />
               Haz un respaldo de tus datos
             </span>
-            <IconoFlecha tamano={16} />
+            <IconoFlecha tamano={16} className="text-tinta-suave" />
           </Link>
         )}
         {grabaciones.length > 0 && (
           <Link
             href="/bitacora/grabaciones"
-            className="flex items-center justify-between gap-3 border-[3px] border-linea bg-superficie p-3 text-sm font-medium"
+            className="mt-3 flex items-center justify-between gap-3 border-2 border-sutil bg-superficie px-4 py-3.5 text-[0.95rem]"
           >
             <span className="flex items-center gap-2">
-              <Forma tipo="circulo" relleno="rojo" trazo="ninguno" tamano={16} />
+              <Forma tipo="circulo" relleno="rojo" trazo="ninguno" tamano={12} />
               Grabaciones · {grabaciones.length}
             </span>
-            <IconoFlecha tamano={16} />
+            <IconoFlecha tamano={16} className="text-tinta-suave" />
           </Link>
         )}
       </div>
-      <section className="px-4 pt-7" aria-labelledby="titulo-ensayos">
-        <h2 id="titulo-ensayos" className="etiqueta mb-2 flex items-center gap-2">
-          <Forma tipo="cuadrado" relleno="azul" trazo="ninguno" tamano={14} />
+      <section className="px-5 pt-10" aria-labelledby="titulo-ensayos">
+        <h2 id="titulo-ensayos" className="titulo-bauhaus mb-4 text-[1.4rem]">
           Ensayos
         </h2>
         {ensayos === undefined ? null : ensayos.length === 0 ? (
@@ -86,19 +82,19 @@ function ListaPorMes({ ensayos }: { ensayos: Ensayo[] }) {
     grupos.at(-1)!.ensayos.push(e);
   }
   return (
-    <div className="space-y-5">
+    <div className="space-y-8">
       {grupos.map((g) => {
         const f = partesFecha(`${g.mes}-01`);
         const minutos = g.ensayos.reduce((s, e) => s + (e.duracionMin ?? 0), 0);
         return (
           <div key={g.mes}>
-            <p className="etiqueta mb-1.5 flex justify-between text-tinta-suave">
+            <p className="etiqueta mb-2 flex justify-between text-tinta-suave">
               <span>
                 {f.mesLargo} {f.anio}
               </span>
               <span>{minutos > 0 ? formatoDuracion(minutos) : ""}</span>
             </p>
-            <div className="border-[3px] border-linea">
+            <div className="border-2 border-sutil bg-superficie">
               {g.ensayos.map((e) => (
                 <FilaEnsayo key={e.id} ensayo={e} href={`/bitacora/ensayo?id=${e.id}`} />
               ))}
@@ -114,16 +110,22 @@ function Resumen({ ensayos, hoy }: { ensayos: Ensayo[]; hoy: string | null }) {
   const racha = hoy ? rachaActual(ensayos.map((e) => e.fecha), hoy) : 0;
   const semana = hoy ? resumenSemana(ensayos, hoy) : { ensayos: 0, minutos: 0 };
   return (
-    <div className="grid grid-cols-2 border-[3px] border-linea">
-      <div className="border-r-[3px] border-linea bg-amarillo p-3 text-sobre-amarillo">
-        <p className="etiqueta">Racha</p>
-        <p className="mt-2 text-[2.6rem] leading-none font-extrabold">{racha}</p>
-        <p className="mt-1 text-sm font-medium">{racha === 1 ? "día seguido" : "días seguidos"}</p>
+    <div className="grid grid-cols-2 border-2 border-sutil bg-superficie">
+      <div className="p-4">
+        <p className="etiqueta flex items-center gap-2 text-tinta-suave">
+          <Forma tipo="circulo" relleno="amarillo" trazo="ninguno" tamano={10} />
+          Racha
+        </p>
+        <p className="mt-3 text-[2.75rem] leading-none font-bold tabular-nums">{racha}</p>
+        <p className="mt-1.5 text-sm text-tinta-suave">{racha === 1 ? "día seguido" : "días seguidos"}</p>
       </div>
-      <div className="bg-azul p-3 text-sobre-color">
-        <p className="etiqueta">Esta semana</p>
-        <p className="mt-2 text-[2.3rem] leading-none font-extrabold whitespace-nowrap">{formatoDuracion(semana.minutos)}</p>
-        <p className="mt-1 text-sm font-medium">
+      <div className="border-l-2 border-sutil p-4">
+        <p className="etiqueta flex items-center gap-2 text-tinta-suave">
+          <Forma tipo="cuadrado" relleno="azul" trazo="ninguno" tamano={10} />
+          Esta semana
+        </p>
+        <p className="mt-3 text-[2.75rem] leading-none font-bold whitespace-nowrap tabular-nums">{formatoDuracion(semana.minutos)}</p>
+        <p className="mt-1.5 text-sm text-tinta-suave">
           {semana.ensayos} {semana.ensayos === 1 ? "ensayo" : "ensayos"}
         </p>
       </div>

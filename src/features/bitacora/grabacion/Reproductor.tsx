@@ -57,7 +57,7 @@ export function Reproductor({ grabacion, contexto }: { grabacion: Grabacion; con
   };
 
   return (
-    <div className="border-2 border-linea bg-superficie p-2.5">
+    <div className="border-2 border-sutil bg-superficie p-2.5">
       <div className="flex items-center gap-3">
         <BotonCircular
           etiqueta={sonando ? "Pausar" : "Reproducir"}

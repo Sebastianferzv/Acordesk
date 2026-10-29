@@ -66,7 +66,7 @@ function FichaCancion({ cancion }: { cancion: Cancion }) {
         subtitulo={cancion.artista}
       />
       <div className="space-y-5 px-4 pt-5">
-        <div className="grid grid-cols-3 border-[3px] border-linea text-center">
+        <div className="grid grid-cols-3 border-2 border-sutil text-center">
           <Dato valor={minutos > 0 ? formatoDuracion(minutos) : "—"} etiqueta="Dedicado" />
           <Dato valor={String(delaCancion.length)} etiqueta={delaCancion.length === 1 ? "Ensayo" : "Ensayos"} borde />
           <Dato
@@ -135,7 +135,7 @@ function FichaCancion({ cancion }: { cancion: Cancion }) {
 
 function Dato({ valor, etiqueta, borde }: { valor: string; etiqueta: string; borde?: boolean }) {
   return (
-    <div className={cx("bg-superficie px-2 py-3", borde && "border-l-[3px] border-linea")}>
+    <div className={cx("bg-superficie px-2 py-3", borde && "border-l-2 border-sutil")}>
       <p className="text-xl leading-none font-extrabold">{valor}</p>
       <p className="etiqueta mt-1.5 text-[0.65rem] text-tinta-suave">{etiqueta}</p>
     </div>

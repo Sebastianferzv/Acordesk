@@ -58,7 +58,7 @@ export function SelloEnsayo({
 
   return (
     <svg viewBox="0 0 64 64" width={tamano} height={tamano} className={className} aria-hidden>
-      <rect x="1.5" y="1.5" width="61" height="61" fill="var(--superficie)" stroke="var(--linea)" strokeWidth="3" />
+      <rect x="1" y="1" width="62" height="62" fill="var(--fondo)" stroke="var(--sutil)" strokeWidth="2" />
       <path d={diseno.linea} stroke="var(--tinta)" strokeWidth="2.5" />
       {duracionMin ? (
         <circle cx={cx} cy={cy} r={radio} fill={VAR_COLOR[colorCirculo]} />

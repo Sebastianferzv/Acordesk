@@ -22,7 +22,7 @@ export function EncabezadoConocimiento() {
   return (
     <>
       <Encabezado titulo="Conocimiento" forma={{ tipo: "semicirculo", color: "rojo" }} />
-      <nav aria-label="Secciones de conocimiento" className="mx-4 mt-4 grid grid-cols-2 border-[3px] border-linea">
+      <nav aria-label="Secciones de conocimiento" className="mx-4 mt-4 grid grid-cols-2 border-2 border-sutil">
         {pestanas.map((p) => {
           const activa = ruta === p.href;
           return (
@@ -31,7 +31,7 @@ export function EncabezadoConocimiento() {
               href={p.href}
               aria-current={activa ? "page" : undefined}
               className={cx(
-                "etiqueta flex h-11 items-center justify-center border-linea first:border-r-[3px]",
+                "etiqueta flex h-11 items-center justify-center border-sutil first:border-r-2",
                 activa ? "bg-tinta text-fondo" : "bg-superficie",
               )}
             >

@@ -38,7 +38,7 @@ export function VisorEscala({ grados }: { grados: string[] }) {
   return (
     <div className="space-y-5">
       {instrumento !== "C" && (
-        <div role="radiogroup" aria-label="Vista" className="grid grid-cols-2 border-[3px] border-linea">
+        <div role="radiogroup" aria-label="Vista" className="grid grid-cols-2 border-2 border-sutil">
           {(["concierto", "instrumento"] as const).map((v) => (
             <button
               key={v}
@@ -47,7 +47,7 @@ export function VisorEscala({ grados }: { grados: string[] }) {
               aria-checked={vista === v}
               onClick={() => setVista(v)}
               className={cx(
-                "etiqueta h-12 border-linea first:border-r-[3px]",
+                "etiqueta h-12 border-sutil first:border-r-2",
                 vista === v ? "bg-tinta text-fondo" : "bg-superficie",
               )}
             >
@@ -69,7 +69,7 @@ export function VisorEscala({ grados }: { grados: string[] }) {
                 aria-pressed={pc === pcVista}
                 onClick={() => elegir(pc)}
                 className={cx(
-                  "h-11 border-2 border-linea text-[0.95rem] font-semibold",
+                  "h-11 border-2 border-sutil text-[0.95rem] font-semibold",
                   pc === pcVista ? "bg-rojo text-sobre-color" : "bg-superficie",
                 )}
               >
@@ -90,7 +90,7 @@ export function VisorEscala({ grados }: { grados: string[] }) {
               <span
                 className={cx(
                   "flex size-12 items-center justify-center text-lg font-bold",
-                  i === 0 ? "rounded-full border-[3px] border-linea bg-rojo text-sobre-color" : "border-[3px] border-linea bg-superficie",
+                  i === 0 ? "rounded-full border-2 border-sutil bg-rojo text-sobre-color" : "border-2 border-sutil bg-superficie",
                 )}
               >
                 <NombreNota nota={n} notacion={notacion} />

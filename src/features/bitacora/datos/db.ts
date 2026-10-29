@@ -17,6 +17,7 @@ export class BaseBitacora extends Dexie {
   cronometro!: Table<Cronometro, string>;
   meta!: Table<Meta, string>;
 
+  // Nombre histórico de la base: no cambiarlo, o se pierden los datos ya guardados.
   constructor(nombre = "bitacora-de-viaje") {
     super(nombre);
     this.version(1).stores({

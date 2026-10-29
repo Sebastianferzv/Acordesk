@@ -23,7 +23,7 @@ export function EditorGrados({ grados, onCambiar }: { grados: string[]; onCambia
             disabled={g === "1"}
             onClick={() => alternar(g)}
             className={cx(
-              "h-11 border-2 border-linea font-semibold disabled:opacity-100",
+              "h-11 border-2 border-sutil font-semibold disabled:opacity-100",
               activo ? (g === "1" ? "bg-rojo text-sobre-color" : "bg-azul text-sobre-color") : "bg-superficie",
             )}
           >

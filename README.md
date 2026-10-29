@@ -1,4 +1,4 @@
-# Bitácora de viaje
+# Bitácora de ensayos
 
 Registro de ensayos musicales y base de conocimiento (escalas, tips), con estilo Bauhaus.
 PWA pensada para el celular; los datos se guardan en el dispositivo (IndexedDB).

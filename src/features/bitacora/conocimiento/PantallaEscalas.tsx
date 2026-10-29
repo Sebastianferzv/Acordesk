@@ -30,12 +30,12 @@ export function PantallaEscalas() {
             transpuestas para tu instrumento.
           </EstadoVacio>
         ) : (
-          <ul className="border-[3px] border-linea">
+          <ul className="border-2 border-sutil">
             {mias.map((e) => {
               const nTips = tips.filter((t) => t.escalaId === e.id).length;
               const uso = escalaDelCatalogo(e.catalogoId)?.uso;
               return (
-                <li key={e.id} className="border-b-[3px] border-linea last:border-b-0">
+                <li key={e.id} className="border-b-2 border-sutil last:border-b-0">
                   <Link href={`/bitacora/escala?id=${e.id}`} className="flex items-center gap-3 bg-superficie p-3">
                     <Forma tipo="semicirculo" relleno={e.catalogoId ? "rojo" : "azul"} trazo="ninguno" tamano={22} className="shrink-0" />
                     <span className="min-w-0 flex-1">

@@ -75,11 +75,11 @@ export function HojaAgregarEscala({ abierta, onCerrar, mias }: Props) {
             {FAMILIAS.map((familia) => (
               <section key={familia}>
                 <h3 className="etiqueta mb-2 text-tinta-suave">{familia}</h3>
-                <ul className="border-[3px] border-linea">
+                <ul className="border-2 border-sutil">
                   {CATALOGO.filter((e) => e.familia === familia).map((e) => {
                     const yaEsta = mias.some((m) => m.catalogoId === e.id);
                     return (
-                      <li key={e.id} className="border-b-2 border-linea last:border-b-0">
+                      <li key={e.id} className="border-b-2 border-sutil last:border-b-0">
                         <button
                           type="button"
                           onClick={() => void agregarDelCatalogo(e.id)}

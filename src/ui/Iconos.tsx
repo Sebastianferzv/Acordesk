@@ -13,7 +13,7 @@ const base = (tamano: number, className?: string) => ({
   "aria-hidden": true as const,
   fill: "none",
   stroke: "currentColor",
-  strokeWidth: 2.75,
+  strokeWidth: 2.25,
 });
 
 export function IconoAjustes({ tamano = 22, className }: Props) {
@@ -57,6 +57,23 @@ export function IconoFlecha({ tamano = 18, className }: Props) {
     <svg {...base(tamano, className)}>
       <path d="M2 12h19" />
       <path d="M14 4.5l7.5 7.5-7.5 7.5" />
+    </svg>
+  );
+}
+
+export function IconoCopiar({ tamano = 18, className }: Props) {
+  return (
+    <svg {...base(tamano, className)}>
+      <rect x="8" y="8" width="13" height="13" />
+      <path d="M16 8V3H3v13h5" />
+    </svg>
+  );
+}
+
+export function IconoBasura({ tamano = 18, className }: Props) {
+  return (
+    <svg {...base(tamano, className)}>
+      <path d="M3 6h18M9 6V3h6v3M5.5 6l1 15h11l1-15" />
     </svg>
   );
 }

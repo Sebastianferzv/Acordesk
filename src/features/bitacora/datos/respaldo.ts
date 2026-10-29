@@ -2,6 +2,7 @@ import { fechaLocal } from "@/lib/fechas";
 import { db } from "./db";
 import { fusionar, TABLAS_SINCRONIZABLES, type DatosSincronizables } from "./fusionar";
 
+// Identificador histórico de los respaldos: no cambiarlo, o los respaldos antiguos dejan de importarse.
 const APP = "bitacora-de-viaje";
 const VERSION = 1;
 const CLAVE_ULTIMO_RESPALDO = "ultimoRespaldo";
@@ -41,7 +42,7 @@ export async function exportarRespaldo(): Promise<void> {
   let compartido = false;
   if (navigator.canShare?.({ files: [archivo] })) {
     try {
-      await navigator.share({ files: [archivo], title: "Respaldo de Bitácora de viaje" });
+      await navigator.share({ files: [archivo], title: "Respaldo de Bitácora de ensayos" });
       compartido = true;
     } catch (e) {
       if ((e as DOMException).name === "AbortError") return;
@@ -68,7 +69,7 @@ export async function importarRespaldo(archivo: File): Promise<{ guardados: numb
   } catch {
     throw new ErrorRespaldo("El archivo no es un respaldo válido.");
   }
-  if (contenido.app !== APP || !contenido.datos) throw new ErrorRespaldo("El archivo no es un respaldo de Bitácora de viaje.");
+  if (contenido.app !== APP || !contenido.datos) throw new ErrorRespaldo("El archivo no es un respaldo de Bitácora de ensayos.");
   if ((contenido.version ?? 0) > VERSION) throw new ErrorRespaldo("El respaldo es de una versión más nueva de la app.");
   const datos = Object.fromEntries(
     TABLAS_SINCRONIZABLES.map((t) => [t, Array.isArray(contenido.datos?.[t]) ? contenido.datos[t] : []]),

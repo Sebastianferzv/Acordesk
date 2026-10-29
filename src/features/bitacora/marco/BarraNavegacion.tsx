@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cx } from "@/ui/cx";
-import { Forma, VAR_COLOR, type ColorBauhaus, type TipoForma } from "@/ui/Forma";
+import { Forma, type ColorBauhaus, type TipoForma } from "@/ui/Forma";
 import { IconoMas } from "@/ui/Iconos";
 import { useAhora } from "@/lib/useAhora";
 import { formatoReloj, tiempoTranscurrido } from "../datos/cronometro";
@@ -45,23 +45,17 @@ export function BarraNavegacion({ onEnsayar, cronometro }: { onEnsayar: () => vo
         aria-current={activa ? "page" : undefined}
         className="relative flex flex-col items-center justify-center gap-1 pt-1"
       >
-        {activa && (
-          <span
-            aria-hidden
-            className="absolute inset-x-3 top-0 h-1"
-            style={{ background: p.color === "multicolor" ? VAR_COLOR.tinta : VAR_COLOR[p.color] }}
-          />
-        )}
         <Forma
           tipo={p.forma}
-          tamano={22}
+          tamano={20}
           relleno={activa ? p.color : undefined}
-          grosor={2.25}
+          trazo={activa && p.forma !== "barras" ? "ninguno" : undefined}
+          grosor={1.75}
         />
         <span
           className={cx(
-            "text-[0.7rem] leading-none font-semibold",
-            activa ? "text-tinta" : "text-tinta-suave",
+            "text-[0.68rem] leading-none font-medium",
+            activa ? "text-tinta" : "text-tinta-suave/80",
           )}
         >
           {p.etiqueta}
@@ -72,7 +66,7 @@ export function BarraNavegacion({ onEnsayar, cronometro }: { onEnsayar: () => vo
 
   return (
     <nav aria-label="Navegación principal" className="fixed inset-x-0 bottom-0 z-30">
-      <div className="mx-auto max-w-[640px] border-t-[3px] border-linea bg-superficie pb-[env(safe-area-inset-bottom)] sm:border-x-[3px]">
+      <div className="mx-auto max-w-[640px] border-t-2 border-sutil bg-superficie pb-[env(safe-area-inset-bottom)] backdrop-blur">
         <div className="grid h-16 grid-cols-5">
           {IZQUIERDA.map(pestana)}
           <div className="flex items-start justify-center">
@@ -80,14 +74,14 @@ export function BarraNavegacion({ onEnsayar, cronometro }: { onEnsayar: () => vo
               type="button"
               onClick={onEnsayar}
               aria-label={cronometro ? "Ir al cronómetro" : "Ensayar"}
-              className="-mt-6 inline-flex size-[4.25rem] items-center justify-center rounded-full border-[3px] border-linea bg-rojo text-sobre-color transition-transform active:scale-95"
+              className="-mt-5 inline-flex size-[3.75rem] items-center justify-center rounded-full border-2 border-fondo bg-rojo text-sobre-color shadow-[0_6px_16px_-6px_rgb(207_52_39/0.6)] transition-transform active:scale-95"
             >
               {cronometro ? (
                 <span className="text-sm font-bold tabular-nums">
                   {formatoReloj(tiempoTranscurrido(cronometro, ahora))}
                 </span>
               ) : (
-                <IconoMas tamano={26} />
+                <IconoMas tamano={22} />
               )}
             </button>
           </div>

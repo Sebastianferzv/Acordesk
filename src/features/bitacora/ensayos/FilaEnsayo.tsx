@@ -24,27 +24,27 @@ export function FilaEnsayo({ ensayo, href }: { ensayo: Ensayo; href?: string }) 
         valoracion={ensayo.valoracion}
         canciones={ensayo.items.length}
         conAprendizajes={ensayo.aprendizajes.length > 0}
-        className="shrink-0"
+        tamano={44} className="shrink-0"
       />
       <div className="min-w-0 flex-1">
         <div className="flex items-baseline justify-between gap-2">
-          <p className="etiqueta">
-            {f.diaSemana} {f.dia} {f.mes}
-          </p>
+          <p className="truncate text-[1.05rem] font-medium">{resumen}</p>
           {ensayo.duracionMin ? (
-            <p className="shrink-0 text-sm font-bold">{formatoDuracion(ensayo.duracionMin)}</p>
+            <p className="shrink-0 text-sm font-semibold tabular-nums">{formatoDuracion(ensayo.duracionMin)}</p>
           ) : null}
         </div>
-        <p className="mt-0.5 truncate text-[1.05rem] font-medium">{resumen}</p>
-        <div className="mt-1 flex items-center gap-2 text-xs text-tinta-suave">
+        <div className="mt-1 flex items-center gap-2 text-[0.8rem] text-tinta-suave">
+          <span className="shrink-0 capitalize">
+            {f.diaSemana.toLowerCase()} {f.dia}
+          </span>
           {ensayo.valoracion ? <ValoracionFormas valor={ensayo.valoracion} tamano={11} /> : null}
-          {detalles.length > 0 && <span className="truncate">{detalles.join(" · ")}</span>}
+          {detalles.length > 0 && <span className="truncate">· {detalles.join(" · ")}</span>}
         </div>
       </div>
     </>
   );
 
-  const clases = "flex items-center gap-3 border-b-[3px] border-linea bg-superficie p-3 last:border-b-0";
+  const clases = "flex items-center gap-4 border-b-2 border-sutil px-4 py-3.5 last:border-b-0 active:bg-hundido";
   return href ? (
     <Link href={href} className={clases}>
       {contenido}

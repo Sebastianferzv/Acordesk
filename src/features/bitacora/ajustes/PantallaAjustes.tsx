@@ -42,7 +42,7 @@ function Segmentado<T extends string>({
   onCambiar: (v: T) => void;
 }) {
   return (
-    <div role="radiogroup" aria-label={etiqueta} className="grid border-2 border-linea" style={{ gridTemplateColumns: `repeat(${opciones.length}, 1fr)` }}>
+    <div role="radiogroup" aria-label={etiqueta} className="grid border border-sutil" style={{ gridTemplateColumns: `repeat(${opciones.length}, 1fr)` }}>
       {opciones.map((o) => (
         <button
           key={o.valor}
@@ -51,7 +51,7 @@ function Segmentado<T extends string>({
           aria-checked={valor === o.valor}
           onClick={() => onCambiar(o.valor)}
           className={cx(
-            "h-11 border-r-2 border-linea text-sm font-semibold last:border-r-0",
+            "h-11 border-r border-sutil text-sm font-semibold last:border-r-0",
             valor === o.valor ? "bg-tinta text-fondo" : "bg-superficie",
           )}
         >
@@ -102,11 +102,11 @@ export function PantallaAjustes() {
                 aria-pressed={ajustes.instrumento === i.clave}
                 onClick={() => guardarAjustes({ instrumento: i.clave })}
                 className={cx(
-                  "flex w-full items-center gap-3 border-2 border-linea p-3 text-left",
+                  "flex w-full items-center gap-3 border border-sutil p-3 text-left",
                   ajustes.instrumento === i.clave ? "bg-tinta text-fondo" : "bg-superficie",
                 )}
               >
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-full border-2 border-current text-sm font-bold">
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-full border border-current text-sm font-bold">
                   <NombreNota nota={i.clave} notacion={ajustes.notacion} />
                 </span>
                 <span>
@@ -232,7 +232,7 @@ export function PantallaAjustes() {
         </Bloque>
 
         <Bloque titulo="Más" acento={{ forma: "barras", color: "tinta" }}>
-          <Link href="/bitacora/grabaciones" className="flex items-center justify-between gap-3 border-b-[3px] border-linea p-4 font-medium">
+          <Link href="/bitacora/grabaciones" className="flex items-center justify-between gap-3 border-b border-sutil p-4 font-medium">
             Todas las grabaciones <IconoFlecha />
           </Link>
           <Link href="/bitacora/muestrario" className="flex items-center justify-between gap-3 p-4 font-medium">
@@ -245,14 +245,14 @@ export function PantallaAjustes() {
                 await cargarDatosDeEjemplo(fechaLocal());
                 avisar({ texto: "Datos de ejemplo cargados." });
               }}
-              className="flex w-full items-center justify-between gap-3 border-t-[3px] border-linea p-4 text-left font-medium text-rojo"
+              className="flex w-full items-center justify-between gap-3 border-t border-sutil p-4 text-left font-medium text-rojo"
             >
               Cargar datos de ejemplo <IconoFlecha />
             </button>
           )}
         </Bloque>
 
-        <p className="etiqueta pb-2 text-tinta-suave">Bitácora de viaje · v1.0</p>
+        <p className="etiqueta pb-2 text-tinta-suave">Bitácora de ensayos · v1.0</p>
       </div>
     </>
   );

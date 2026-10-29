@@ -65,13 +65,13 @@ export function PantallaRepertorio() {
         ) : visibles.length === 0 ? (
           <p className="py-6 text-center text-tinta-suave">No hay canciones con ese estado.</p>
         ) : (
-          <ul className="border-[3px] border-linea">
+          <ul className="border-2 border-sutil">
             {visibles.map((c) => {
               const ultimo = ultimoEnsayo.get(c.id);
               const f = ultimo ? partesFecha(ultimo) : null;
               const min = minutos.get(c.id) ?? 0;
               return (
-                <li key={c.id} className="border-b-[3px] border-linea last:border-b-0">
+                <li key={c.id} className="border-b-2 border-sutil last:border-b-0">
                   <Link href={`/bitacora/cancion?id=${c.id}`} className="flex items-center gap-3 bg-superficie p-3">
                     <MarcaEstado estado={c.estado} tamano={22} />
                     <span className="min-w-0 flex-1">

@@ -57,7 +57,7 @@ export function SeccionCanciones({ ensayo }: { ensayo: Ensayo }) {
         {ensayo.items.map((item) => {
           const c = porId.get(item.cancionId);
           return (
-            <div key={item.cancionId} className="space-y-2 border-2 border-linea bg-fondo p-2.5">
+            <div key={item.cancionId} className="space-y-2 border-2 border-sutil bg-fondo p-2.5">
               <div className="flex items-center gap-2">
                 {c ? <MarcaEstado estado={c.estado} /> : null}
                 {c ? (

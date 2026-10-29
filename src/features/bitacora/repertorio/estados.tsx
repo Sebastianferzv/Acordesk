@@ -29,7 +29,7 @@ interface Props {
 /** Selector de estado de una canción (en progreso, pulir, sacada). */
 export function SelectorEstado({ estado, onCambiar, compacto }: Props) {
   return (
-    <div role="radiogroup" aria-label="Estado" className="grid grid-cols-3 border-2 border-linea">
+    <div role="radiogroup" aria-label="Estado" className="grid grid-cols-3 border-2 border-sutil">
       {ESTADOS.map((e) => {
         const activo = e.valor === estado;
         return (
@@ -40,7 +40,7 @@ export function SelectorEstado({ estado, onCambiar, compacto }: Props) {
             aria-checked={activo}
             onClick={() => onCambiar(e.valor)}
             className={cx(
-              "flex items-center justify-center gap-1.5 border-r-2 border-linea font-medium last:border-r-0",
+              "flex items-center justify-center gap-1.5 border-r-2 border-sutil font-medium last:border-r-0",
               compacto ? "h-9 text-xs" : "h-11 text-sm",
               activo ? "bg-tinta text-fondo" : "bg-superficie",
             )}

@@ -66,7 +66,7 @@ function TarjetaEnlace({ enlace, onQuitar }: { enlace: Enlace; onQuitar: () => v
     const params = new URLSearchParams({ playsinline: "1", rel: "0", autoplay: "1" });
     if (enlace.inicioSeg) params.set("start", String(enlace.inicioSeg));
     return (
-      <div className="border-[3px] border-linea bg-superficie">
+      <div className="border-2 border-sutil bg-superficie">
         <div className="relative aspect-video bg-tinta">
           {reproduciendo ? (
             <iframe
@@ -91,7 +91,7 @@ function TarjetaEnlace({ enlace, onQuitar }: { enlace: Enlace; onQuitar: () => v
                 className="size-full object-cover"
                 loading="lazy"
               />
-              <span className="absolute inset-0 m-auto flex size-16 items-center justify-center rounded-full border-[3px] border-linea bg-rojo text-sobre-color">
+              <span className="absolute inset-0 m-auto flex size-16 items-center justify-center rounded-full border-2 border-sutil bg-rojo text-sobre-color">
                 <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden>
                   <polygon points="7,3 21,12 7,21" fill="currentColor" />
                 </svg>
@@ -99,7 +99,7 @@ function TarjetaEnlace({ enlace, onQuitar }: { enlace: Enlace; onQuitar: () => v
             </button>
           )}
         </div>
-        <div className="flex items-center gap-2 border-t-[3px] border-linea pl-3">
+        <div className="flex items-center gap-2 border-t-2 border-sutil pl-3">
           <span className="etiqueta flex-1 truncate py-2 text-tinta-suave">
             YouTube{enlace.inicioSeg ? ` · desde ${Math.floor(enlace.inicioSeg / 60)}:${String(enlace.inicioSeg % 60).padStart(2, "0")}` : ""}
           </span>
@@ -113,7 +113,7 @@ function TarjetaEnlace({ enlace, onQuitar }: { enlace: Enlace; onQuitar: () => v
   }
 
   return (
-    <div className="flex items-center border-[3px] border-linea bg-superficie">
+    <div className="flex items-center border-2 border-sutil bg-superficie">
       <a href={a.url} target="_blank" rel="noopener noreferrer" className="flex min-w-0 flex-1 items-center gap-3 p-3">
         <Forma
           tipo={a.tipo === "instagram" ? "circulo" : "cuadrado"}

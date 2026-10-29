@@ -5,7 +5,7 @@ import { cx } from "./cx";
 import { IconoMas } from "./Iconos";
 
 export const clasesEntrada =
-  "w-full border-[3px] border-linea bg-superficie px-3 text-base text-tinta placeholder:text-tinta-suave/80 focus-visible:outline-offset-0";
+  "w-full border-2 border-sutil bg-superficie px-3.5 text-base text-tinta placeholder:text-tinta-suave/70 focus-visible:border-transparent focus-visible:outline-offset-0";
 
 /** Etiqueta + contenido. */
 export function Campo({ etiqueta, children, className }: { etiqueta: string; children: ReactNode; className?: string }) {
@@ -106,13 +106,13 @@ export function EntradaRapida({ placeholder, onAgregar, etiquetaBoton = "Agregar
             void agregar();
           }
         }}
-        className={cx(clasesEntrada, "h-12 min-w-0 flex-1 border-r-0")}
+        className={cx(clasesEntrada, "h-12 min-w-0 flex-1 rounded-r-none border-r-0")}
       />
       <button
         type="button"
         onClick={() => void agregar()}
         aria-label={etiquetaBoton}
-        className="inline-flex size-12 shrink-0 items-center justify-center border-[3px] border-linea bg-tinta text-fondo active:translate-y-px"
+        className="inline-flex size-12 shrink-0 items-center justify-center rounded-l-none border-2 border-sutil bg-hundido text-tinta active:translate-y-px"
       >
         <IconoMas tamano={18} />
       </button>

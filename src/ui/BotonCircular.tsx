@@ -40,7 +40,7 @@ export function BotonCircular({
       aria-label={etiqueta}
       title={etiqueta}
       className={cx(
-        "inline-flex shrink-0 items-center justify-center rounded-full border-[3px] border-linea transition-transform active:scale-95 disabled:opacity-40",
+        "inline-flex shrink-0 items-center justify-center rounded-full transition-transform active:scale-95 disabled:opacity-40",
         COLORES[color],
         TAMANOS[tamano],
         className,

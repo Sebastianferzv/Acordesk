@@ -38,7 +38,7 @@ export function SeccionAprendizajes({ ensayo }: { ensayo: Ensayo }) {
     <Bloque titulo="Aprendizajes" acento={{ forma: "triangulo", color: "rojo" }}>
       <div className="space-y-2 p-4">
         {ensayo.aprendizajes.map((a) => (
-          <div key={a.id} className="border-2 border-linea bg-fondo">
+          <div key={a.id} className="border-2 border-sutil bg-fondo">
             <div className="flex items-start gap-2 p-2.5">
               <Forma tipo="triangulo" relleno="amarillo" trazo="ninguno" tamano={14} className="mt-1 shrink-0" />
               <p className="flex-1 leading-snug">{a.texto}</p>
@@ -51,7 +51,7 @@ export function SeccionAprendizajes({ ensayo }: { ensayo: Ensayo }) {
                 <IconoCerrar tamano={13} />
               </button>
             </div>
-            <div className="border-t-2 border-linea">
+            <div className="border-t-2 border-sutil">
               {promovidos.has(a.id) ? (
                 <Link href="/bitacora/tips" className="etiqueta flex h-9 items-center justify-between px-2.5 text-tinta-suave">
                   ✓ Está en tu conocimiento <IconoFlecha tamano={14} />

@@ -67,7 +67,7 @@ export function GraficoBarras({ titulo, puntos, color, formato, cadaEtiqueta = 1
           })}
         </div>
       </div>
-      <div className="h-[3px] bg-linea" />
+      <div className="h-0.5 bg-sutil" />
       <div className="mt-1 flex" aria-hidden>
         {puntos.map((punto, i) => (
           <span key={i} className="overflow-visible text-center text-[0.6rem] whitespace-nowrap text-tinta-suave" style={{ width: `${ancho}%` }}>

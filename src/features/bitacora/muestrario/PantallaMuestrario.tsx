@@ -73,7 +73,7 @@ const EJEMPLOS: Ensayo[] = [
 function Seccion({ titulo, children }: { titulo: string; children: ReactNode }) {
   return (
     <section className="space-y-3">
-      <h2 className="etiqueta border-b-[3px] border-linea pb-1.5">{titulo}</h2>
+      <h2 className="etiqueta border-b-2 border-sutil pb-1.5">{titulo}</h2>
       {children}
     </section>
   );
@@ -92,11 +92,11 @@ export function PantallaMuestrario() {
       <Encabezado titulo="Muestrario" volverA="/bitacora/ajustes" subtitulo="Sistema de diseño Bauhaus" />
       <div className="space-y-8 px-4 pt-5">
         <Seccion titulo="Colores">
-          <div className="grid grid-cols-3 border-[3px] border-linea">
+          <div className="grid grid-cols-3 border-2 border-sutil">
             {COLORES.map((c) => (
-              <div key={c.nombre} className="border-linea [&:nth-child(-n+3)]:border-b-[3px] [&:not(:nth-child(3n))]:border-r-[3px]">
+              <div key={c.nombre} className="border-sutil [&:nth-child(-n+3)]:border-b-2 [&:not(:nth-child(3n))]:border-r-2">
                 <div className={`h-14 ${c.clase}`} />
-                <p className="etiqueta border-t-[3px] border-linea bg-superficie px-2 py-1.5 text-[0.65rem]">{c.nombre}</p>
+                <p className="etiqueta border-t-2 border-sutil bg-superficie px-2 py-1.5 text-[0.65rem]">{c.nombre}</p>
               </div>
             ))}
           </div>
@@ -194,7 +194,7 @@ export function PantallaMuestrario() {
         </Seccion>
 
         <Seccion titulo="Lista de ensayos">
-          <div className="border-[3px] border-linea">
+          <div className="border-2 border-sutil">
             {EJEMPLOS.map((e) => (
               <FilaEnsayo key={e.id} ensayo={e} />
             ))}

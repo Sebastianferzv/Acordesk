@@ -76,7 +76,7 @@ export function PantallaEstadisticas() {
     <>
       <Encabezado titulo="Estadísticas" forma={{ tipo: "barras", color: "multicolor" }} />
       <div className="space-y-5 px-4 pt-5">
-        <div className="grid grid-cols-2 border-[3px] border-linea">
+        <div className="grid grid-cols-2 border-2 border-sutil">
           <Cifra valor={formatoHoras(totalMin)} unidad="horas" etiqueta="En total" />
           <Cifra valor={String(ensayos.length)} unidad={ensayos.length === 1 ? "ensayo" : "ensayos"} etiqueta="Registrados" borde />
           <Cifra valor={String(rachaActual(fechas, hoy))} unidad={rachaActual(fechas, hoy) === 1 ? "día" : "días"} etiqueta="Racha actual" arriba />
@@ -85,7 +85,7 @@ export function PantallaEstadisticas() {
 
         <Bloque titulo="Tiempo de ensayo" acento={{ forma: "cuadrado", color: "azul" }}>
           <div className="p-4">
-            <div role="radiogroup" aria-label="Agrupar por" className="mb-4 grid grid-cols-2 border-2 border-linea">
+            <div role="radiogroup" aria-label="Agrupar por" className="mb-4 grid grid-cols-2 border-2 border-sutil">
               {(["semanas", "meses"] as const).map((v) => (
                 <button
                   key={v}
@@ -93,7 +93,7 @@ export function PantallaEstadisticas() {
                   role="radio"
                   aria-checked={vista === v}
                   onClick={() => setVista(v)}
-                  className={cx("etiqueta h-10 border-linea first:border-r-2", vista === v ? "bg-tinta text-fondo" : "bg-superficie")}
+                  className={cx("etiqueta h-10 border-sutil first:border-r-2", vista === v ? "bg-tinta text-fondo" : "bg-superficie")}
                 >
                   {v === "semanas" ? "12 semanas" : "12 meses"}
                 </button>
@@ -170,7 +170,7 @@ export function PantallaEstadisticas() {
 
 function Cifra({ valor, unidad, etiqueta, borde, arriba }: { valor: string; unidad: string; etiqueta: string; borde?: boolean; arriba?: boolean }) {
   return (
-    <div className={cx("bg-superficie p-3", borde && "border-l-[3px] border-linea", arriba && "border-t-[3px] border-linea")}>
+    <div className={cx("bg-superficie p-3", borde && "border-l-2 border-sutil", arriba && "border-t-2 border-sutil")}>
       <p className="etiqueta text-tinta-suave">{etiqueta}</p>
       <p className="mt-1.5 flex items-baseline gap-1.5">
         <span className="text-[2.2rem] leading-none font-extrabold">{valor}</span>

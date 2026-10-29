@@ -38,14 +38,14 @@ export function Hoja({ abierta, onCerrar, titulo, children }: Props) {
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-end justify-center">
-      <div aria-hidden className="absolute inset-0 animate-aparecer bg-black/50" onClick={onCerrar} />
+      <div aria-hidden className="absolute inset-0 animate-aparecer bg-black/40" onClick={onCerrar} />
       <div
         ref={panel}
         role="dialog"
         aria-modal="true"
         aria-labelledby={idTitulo}
         tabIndex={-1}
-        className="relative w-full max-w-[640px] animate-subir border-t-[3px] border-linea bg-superficie px-4 pt-4 pb-[calc(1.5rem+env(safe-area-inset-bottom))] outline-none sm:border-x-[3px]"
+        className="relative max-h-[92dvh] w-full rounded-t-[calc(var(--radio)*2)] max-w-[640px] animate-subir overflow-y-auto border-t-2 border-sutil bg-superficie px-5 pt-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] outline-none"
       >
         <div className="mb-4 flex items-center justify-between gap-3">
           <h2 id={idTitulo} className="titulo-bauhaus text-[1.75rem]">
@@ -55,7 +55,7 @@ export function Hoja({ abierta, onCerrar, titulo, children }: Props) {
             type="button"
             onClick={onCerrar}
             aria-label="Cerrar"
-            className="inline-flex size-10 items-center justify-center border-[3px] border-linea bg-fondo"
+            className="inline-flex size-10 items-center justify-center border-2 border-sutil bg-fondo"
           >
             <IconoCerrar tamano={16} />
           </button>

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Jost } from "next/font/google";
+import { MarcoApps } from "@/features/apps/MarcoApps";
 import { ProveedorPWA } from "@/ui/ProveedorPWA";
 import { SCRIPT_TEMA } from "@/ui/temaScript";
 import "./globals.css";
@@ -11,10 +12,10 @@ const jost = Jost({
 });
 
 export const metadata: Metadata = {
-  title: { default: "Bitácora de viaje", template: "%s · Bitácora de viaje" },
-  description: "Registro de ensayos y conocimiento musical.",
-  applicationName: "Bitácora de viaje",
-  appleWebApp: { capable: true, title: "Bitácora", statusBarStyle: "default" },
+  title: { default: "AcorDesk", template: "%s · AcorDesk" },
+  description: "Acordes, ensayos y conocimiento musical.",
+  applicationName: "AcorDesk",
+  appleWebApp: { capable: true, title: "AcorDesk", statusBarStyle: "default" },
   formatDetection: { telephone: false },
 };
 
@@ -22,7 +23,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#f1e9d8",
+  themeColor: "#141311",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -33,7 +34,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <script dangerouslySetInnerHTML={{ __html: SCRIPT_TEMA }} />
       </head>
       <body>
-        <ProveedorPWA>{children}</ProveedorPWA>
+        <ProveedorPWA>
+          <MarcoApps>{children}</MarcoApps>
+        </ProveedorPWA>
       </body>
     </html>
   );

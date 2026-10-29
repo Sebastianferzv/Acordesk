@@ -9,7 +9,9 @@ const NOMBRES: Record<TipoAlteracion, string> = {
   "##": "doble sostenido",
 };
 
-const BEMOL = "M3 1.5V22c4.6-2.4 7.2-5.1 6.5-7.6-.6-2.2-3.4-2.4-6.5 0";
+/** Trazos en una caja de 12×24 (también los usa el pentagrama). */
+export const BEMOL = "M3 1.5V22c4.6-2.4 7.2-5.1 6.5-7.6-.6-2.2-3.4-2.4-6.5 0";
+export const SOSTENIDO = { verticales: "M4.3 3.5V23M7.7 1v19.5", horizontales: "M1 10.2l10-2.6M1 16.7l10-2.6" };
 
 /**
  * Bemol y sostenido dibujados en SVG: la fuente Jost no trae ♭ ni ♯.
@@ -37,8 +39,8 @@ export function Alteracion({ tipo, className }: { tipo: TipoAlteracion; classNam
       )}
       {tipo === "#" && (
         <>
-          <path d="M4.3 3.5V23M7.7 1v19.5" strokeWidth={1.7} />
-          <path d="M1 10.2l10-2.6M1 16.7l10-2.6" strokeWidth={2.8} />
+          <path d={SOSTENIDO.verticales} strokeWidth={1.7} />
+          <path d={SOSTENIDO.horizontales} strokeWidth={2.8} />
         </>
       )}
       {tipo === "##" && <path d="M2 9.5l8 8M10 9.5l-8 8" strokeWidth={2.8} />}

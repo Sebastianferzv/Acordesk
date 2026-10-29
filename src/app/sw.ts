@@ -22,7 +22,7 @@ const serwist = new Serwist({
   runtimeCaching: [
     {
       // Navegaciones: primero la página precargada (buscada por ruta, sin ?id=…), así la
-      // app abre al instante y sin conexión. Si no hay conexión, las demás redirigen a /bitacora.
+      // app abre al instante y sin conexión. Si no hay conexión, las demás redirigen al inicio.
       matcher: ({ request }) => request.mode === "navigate",
       handler: async ({ request }) => {
         const ruta = new URL(request.url).pathname.replace(/\/$/, "") || "/";
@@ -31,8 +31,8 @@ const serwist = new Serwist({
         try {
           return await fetch(request);
         } catch {
-          // Sin conexión: se redirige (no se sirve el HTML de /bitacora con otra URL, eso rompe la hidratación).
-          return Response.redirect(new URL("/bitacora", self.location.origin).href, 302);
+          // Sin conexión: se redirige (no se sirve el HTML de otra página con esta URL, eso rompe la hidratación).
+          return Response.redirect(new URL("/", self.location.origin).href, 302);
         }
       },
     },

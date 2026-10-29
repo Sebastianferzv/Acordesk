@@ -35,12 +35,12 @@ export function TarjetaTip({ tip, referencias, onEditar }: { tip: Tip; referenci
   const escala = tip.escalaId ? referencias.escala.get(tip.escalaId) : undefined;
   const cancion = tip.cancionId ? referencias.cancion.get(tip.cancionId) : undefined;
   return (
-    <article className="border-[3px] border-linea bg-superficie">
+    <article className="border-2 border-sutil bg-superficie">
       <button type="button" onClick={onEditar} className="block w-full p-3 text-left" aria-label="Editar tip">
         <p className="leading-snug whitespace-pre-line">{tip.texto}</p>
       </button>
       {(tip.categoria || escala || cancion || fecha) && (
-        <div className="flex flex-wrap gap-x-3 gap-y-1 border-t-2 border-linea px-3 py-2 text-xs">
+        <div className="flex flex-wrap gap-x-3 gap-y-1 border-t-2 border-sutil px-3 py-2 text-xs">
           {tip.categoria && <span className="etiqueta text-[0.65rem]">{tip.categoria}</span>}
           {escala && (
             <Link href={`/bitacora/escala?id=${tip.escalaId}`} className="font-semibold text-rojo underline-offset-2 hover:underline">

@@ -72,9 +72,9 @@ function Opcion({
     <button
       type="button"
       onClick={onClick}
-      className="flex w-full items-stretch border-[3px] border-linea bg-fondo text-left transition-transform active:translate-y-px"
+      className="flex w-full items-stretch border-2 border-sutil bg-fondo text-left transition-transform active:translate-y-px"
     >
-      <span className="flex w-20 shrink-0 items-center justify-center border-r-[3px] border-linea bg-superficie">
+      <span className="flex w-20 shrink-0 items-center justify-center border-r-2 border-sutil bg-superficie">
         <Forma tipo={forma} relleno={color} trazo="ninguno" tamano={40} />
       </span>
       <span className="flex flex-1 flex-col justify-center px-4 py-3">

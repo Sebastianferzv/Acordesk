@@ -6,8 +6,8 @@ import { CLAVE_TEMA, COLOR_BARRA } from "./temaScript";
 
 export type Tema = "claro" | "oscuro" | "sistema";
 
-const almacenTema = crearAlmacenLocal<Tema>(CLAVE_TEMA, "claro", (v) =>
-  v === "oscuro" || v === "sistema" ? v : "claro",
+const almacenTema = crearAlmacenLocal<Tema>(CLAVE_TEMA, "oscuro", (v) =>
+  v === "claro" || v === "sistema" ? v : "oscuro",
 );
 
 // Debe coincidir con la lógica de SCRIPT_TEMA.

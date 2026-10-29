@@ -10,9 +10,9 @@ const nextConfig: NextConfig = {
       },
     },
   },
-  // La app vive en /bitacora para poder integrarla después a AcorDesk como módulo.
+  // La versión anterior de AcorDesk (HTML suelto) se instaló con /index.html como inicio.
   async redirects() {
-    return [{ source: "/", destination: "/bitacora", permanent: false }];
+    return [{ source: "/index.html", destination: "/", permanent: false }];
   },
 };
 

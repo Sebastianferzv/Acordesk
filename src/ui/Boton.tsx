@@ -4,18 +4,18 @@ import { cx } from "./cx";
 export type VarianteBoton = "primario" | "secundario" | "rojo" | "azul" | "amarillo" | "fantasma";
 
 const VARIANTES: Record<VarianteBoton, string> = {
-  primario: "border-linea bg-tinta text-fondo",
-  secundario: "border-linea bg-superficie text-tinta",
-  rojo: "border-linea bg-rojo text-sobre-color",
-  azul: "border-linea bg-azul text-sobre-color",
-  amarillo: "border-linea bg-amarillo text-sobre-amarillo",
+  primario: "border-transparent bg-tinta text-fondo",
+  secundario: "border-sutil bg-superficie text-tinta",
+  rojo: "border-transparent bg-rojo text-sobre-color",
+  azul: "border-transparent bg-azul text-sobre-color",
+  amarillo: "border-transparent bg-amarillo text-sobre-amarillo",
   fantasma: "border-transparent bg-transparent text-tinta",
 };
 
 /** Clases de botón, para reutilizarlas también en enlaces. */
 export function clasesBoton(variante: VarianteBoton = "primario", anchoCompleto = false, className?: string) {
   return cx(
-    "inline-flex h-12 items-center justify-center gap-2 border-[3px] px-5 text-sm font-semibold uppercase tracking-[0.08em] transition-transform active:translate-y-px disabled:opacity-40",
+    "inline-flex h-12 items-center justify-center gap-2 border-2 px-5 text-sm font-semibold tracking-[0.02em] transition-[transform,opacity] active:translate-y-px active:opacity-80 disabled:opacity-40",
     VARIANTES[variante],
     anchoCompleto && "w-full",
     className,

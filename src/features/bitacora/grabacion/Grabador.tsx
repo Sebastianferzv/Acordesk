@@ -25,7 +25,7 @@ export function Grabador({ ensayoId, cancionId }: { ensayoId?: string; cancionId
   const grabando = estado === "grabando";
 
   return (
-    <div className="border-[3px] border-linea bg-fondo p-3">
+    <div className="border-2 border-sutil bg-fondo p-3">
       <div className="flex items-center gap-4">
         {grabando ? (
           <BotonCircular etiqueta="Detener grabación" color="tinta" tamano="lg" onClick={detener}>
@@ -61,7 +61,7 @@ export function Grabador({ ensayoId, cancionId }: { ensayoId?: string; cancionId
         </div>
       </div>
       {grabando && analizador && (
-        <div className="mt-3 border-t-2 border-linea pt-3">
+        <div className="mt-3 border-t-2 border-sutil pt-3">
           <Visualizador analizador={analizador} />
         </div>
       )}

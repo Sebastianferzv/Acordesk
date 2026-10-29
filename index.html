@@ -260,6 +260,16 @@
       margin-bottom: 12px; min-height: 1.2em;
     }
     .instr-info strong { color: var(--teal); }
+    .instr-key {
+      display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+      background: var(--teal-dim);
+      border: 1px solid rgba(78,205,196,.38);
+      border-radius: var(--rsm);
+      padding: 10px 14px; margin-top: 8px;
+    }
+    .instr-key-lbl { font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+    .instr-key-val { font-size: 1.35rem; font-weight: 800; color: var(--teal); }
+    .instr-key-hint { font-size: .78rem; color: var(--dim); font-style: italic; margin-top: 8px; }
 
     /* ── Output controls ─────────────────────────────── */
     .out-controls {
@@ -354,6 +364,8 @@
       .hdr h1    { font-size: 1.5rem; }
       #instrOut  { font-size: 1.1rem; }
       .ikey      { min-width: 46px; }
+      .btn-row   { display: block; }
+      .btn-trans { width: 100%; padding: 14px 20px; font-size: 1rem; }
     }
 
     /* ── Botón flotante Círculo de Quintas ───── */
@@ -485,7 +497,20 @@
     }
 
     /* Hover en sectores del SVG */
-    .cof-sec { transition: filter .14s; }
+    .cof-sec { transition: filter .14s; cursor: pointer; }
+    .cof-sec:hover { filter: brightness(1.25); }
+    .cof-sec.sel { stroke: #f0b429; stroke-width: 2.5; filter: brightness(1.35); }
+
+    /* Escala y armadura del círculo */
+    #circleModal .modal-box { max-height: 94vh; overflow-y: auto; }
+    .cof-scale { margin-top: 10px; }
+    .cof-scale-title { font-size: 1rem; font-weight: 700; color: #f0e8d0; }
+    .cof-scale-sub   { font-size: .76rem; color: #94a3b8; margin-top: 2px; }
+    .cof-staff {
+      display: block; width: 100%; margin-top: 8px;
+      background: rgba(0,0,0,.22); border: 1px solid rgba(255,255,255,.07);
+      border-radius: 10px;
+    }
 
     /* ── Header de cambiar tonalidad ─────────────── */
     .kc-hdr {
@@ -713,23 +738,6 @@ Fmaj7   Em7b5  A7    Dm"
     ></textarea>
   </div>
 
-  <!-- ─── 1.5. Vista previa ────────────────────────────── -->
-  <div class="card">
-    <div class="qp-hdr">
-      <span class="clabel">Vista previa</span>
-    </div>
-    <div class="out-controls" style="margin-bottom:8px;">
-      <button class="btn btn-deg" id="btnDegQP" onclick="toggleDeg()" title="Mostrar grados">I ii</button>
-      <span class="sep-ln"></span>
-      <button class="btn" onclick="adjSizeQP(-1)">A−</button>
-      <button class="btn" onclick="adjSizeQP(+1)">A+</button>
-      <button class="btn btn-copy" id="btnCopyQP" onclick="copyQP()" title="Copiar"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
-    </div>
-    <div id="quickOut" class="quick-out">
-      <span class="empty-sm">Escribe acordes arriba...</span>
-    </div>
-  </div>
-
   <!-- ─── 2. Transponer button ───────────────────────── -->
   <div class="btn-row">
     <button class="btn-trans" id="btnTrans" onclick="toggleKeyChange()">
@@ -796,7 +804,7 @@ Fmaj7   Em7b5  A7    Dm"
       <div class="out-controls">
         <button class="btn active" id="btnFlat"  onclick="setAcc('flat')">♭ Bemoles</button>
         <button class="btn"        id="btnSharp" onclick="setAcc('sharp')">♯ Sostenidos</button>
-        <span class="sep-ln"></span>
+        <span class="sep-ln" id="sepAcc"></span>
         <button class="btn btn-deg" id="btnDegInstr" onclick="toggleDeg()" title="Mostrar grados">I ii</button>
         <span class="sep-ln"></span>
         <button class="btn" onclick="adjSize(-1)">A−</button>
@@ -806,6 +814,23 @@ Fmaj7   Em7b5  A7    Dm"
       <div id="instrOut">
         <div class="empty">Los acordes para el instrumento aparecerán aquí...</div>
       </div>
+    </div>
+  </div>
+
+  <!-- ─── 1.5. Vista previa ────────────────────────────── -->
+  <div class="card">
+    <div class="qp-hdr">
+      <span class="clabel">Vista previa</span>
+    </div>
+    <div class="out-controls" style="margin-bottom:8px;">
+      <button class="btn btn-deg" id="btnDegQP" onclick="toggleDeg()" title="Mostrar grados">I ii</button>
+      <span class="sep-ln"></span>
+      <button class="btn" onclick="adjSizeQP(-1)">A−</button>
+      <button class="btn" onclick="adjSizeQP(+1)">A+</button>
+      <button class="btn btn-copy" id="btnCopyQP" onclick="copyQP()" title="Copiar"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+    </div>
+    <div id="quickOut" class="quick-out">
+      <span class="empty-sm">Escribe acordes arriba...</span>
     </div>
   </div>
 
@@ -819,6 +844,9 @@ Fmaj7   Em7b5  A7    Dm"
       <button class="modal-close" onclick="toggleCircle()">✕</button>
     </div>
     <svg id="cofSVG" viewBox="0 0 400 400" width="100%" style="display:block;"></svg>
+    <div class="cof-scale" id="cofScale">
+      <p class="cof-note">Toca una tonalidad para ver su escala y armadura.</p>
+    </div>
   </div>
 </div>
 
@@ -854,6 +882,16 @@ Fmaj7   Em7b5  A7    Dm"
       </div>
 
       <div class="manual-section">
+        <h3>Sostenidos o bemoles</h3>
+        <p>Con la tónica elegida, cada contenedor escribe los acordes según su tonalidad: <strong>C G D A E B</strong> en sostenidos y <strong>F B♭ E♭ A♭ D♭ G♭</strong> en bemoles. Los botones ♭/♯ solo aparecen cuando no hay tónica.</p>
+      </div>
+
+      <div class="manual-section">
+        <h3>Círculo de quintas</h3>
+        <p>Toca una tonalidad del círculo (anillo exterior = mayor, interior = menor) para ver su escala y su armadura en el pentagrama.</p>
+      </div>
+
+      <div class="manual-section">
         <h3>Grados de la tonalidad (I ii III…)</h3>
         <p>Activa el botón <code>I ii</code> en cualquier contenedor para ver el grado romano encima de cada acorde. Mayúscula = mayor/dominante, minúscula = menor/disminuido. <code>b</code> indica grado cromático (ej: <code>bVII</code>).</p>
       </div>
@@ -866,6 +904,7 @@ Fmaj7   Em7b5  A7    Dm"
       <div class="manual-section">
         <h3>Transponer a instrumento</h3>
         <p>Expande <strong>Transponer a instrumento</strong> y elige tu instrumento. La app calcula la transposición para que el músico suene en concert pitch.</p>
+        <p>Abajo del instrumento aparece la <strong>tonalidad transpuesta</strong>: la tonalidad en la que te queda la canción para tu instrumento.</p>
       </div>
 
       <div class="manual-section">
@@ -1027,7 +1066,11 @@ const st = {
 
 // ─── Helpers de nota ─────────────────────────────────────────
 function nIdx(n)    { return NOTE_IDX[n] ?? -1; }
-function idx2n(i)   { const x=((i%12)+12)%12; return st.accPref==='flat'?FLAT_N[x]:SHARP_N[x]; }
+// Tonalidades de sostenidos: C G D A E B. El resto (F Bb Eb Ab Db Gb) en bemoles.
+const SHARP_KEYS = new Set(['C','G','D','A','E','B']);
+let spellAcc = null;   // alteración forzada por la tonalidad del contenedor que se está dibujando
+function accForKey(key){ return key ? (SHARP_KEYS.has(key) ? 'sharp' : 'flat') : null; }
+function idx2n(i)   { const x=((i%12)+12)%12; return (spellAcc||st.accPref)==='flat'?FLAT_N[x]:SHARP_N[x]; }
 function trNote(n,s){ const i=nIdx(n); return i===-1?n:idx2n(i+s); }
 
 // ─── Calidad de acorde ───────────────────────────────────────
@@ -1178,9 +1221,16 @@ function showNoteTip(cc){
   tip.style.display = 'block';
 }
 
-function buildHTML(raw, semi, scaleSet=null, showDeg=false){
+// outKey: tonalidad en la que quedan los acordes; define si se escriben con ♯ o ♭
+function buildHTML(raw, semi, scaleSet=null, showDeg=false, outKey=''){
   if(!raw.trim())
     return '<span class="empty-sm">Ingresa acordes arriba para ver los resultados.</span>';
+  spellAcc = accForKey(outKey);
+  try { return buildLines(raw, semi, scaleSet, showDeg); }
+  finally { spellAcc = null; }
+}
+
+function buildLines(raw, semi, scaleSet, showDeg){
   return raw.split('\n').map(line=>{
     if(!line.trim()) return '<div class="out-gap"></div>';
     const inner = tokenize(line).map(tok=>{
@@ -1237,7 +1287,7 @@ function renderAll(){
   });
 
   qOut.innerHTML = raw.trim()
-    ? buildHTML(raw, 0, scaleSet, st.showDeg)
+    ? buildHTML(raw, 0, scaleSet, st.showDeg, st.origKey)
     : '<span class="empty-sm">Escribe acordes arriba...</span>';
 
   // — Cambiar tonalidad preview —
@@ -1246,7 +1296,7 @@ function renderAll(){
   if(!st.origKey || !st.targKey){
     kcOut.innerHTML = '<span class="empty-sm">Establece la tónica original y elige la nueva tónica para ver los acordes en la nueva tonalidad.</span>';
   } else {
-    kcOut.innerHTML = buildHTML(raw, ks, scaleSet, st.showDeg);
+    kcOut.innerHTML = buildHTML(raw, ks, scaleSet, st.showDeg, st.targKey);
   }
   document.getElementById('kcControls').style.display = kcHasContent ? 'flex' : 'none';
   renderKCBadges(ks);
@@ -1256,9 +1306,15 @@ function renderAll(){
   if(!raw.trim()){
     iOut.innerHTML = '<div class="empty">Los acordes para el instrumento aparecerán aquí...</div>';
   } else {
-    iOut.innerHTML = buildHTML(raw, ks + io, scaleSet, st.showDeg);
+    iOut.innerHTML = buildHTML(raw, ks + io, scaleSet, st.showDeg, instrReadsKey(io));
   }
   renderInstrInfo(ks, io);
+
+  // Con tónica elegida, la tonalidad decide ♯/♭; los botones solo sirven sin tónica
+  const manualAcc = !st.origKey;
+  ['btnFlat','btnSharp','sepAcc'].forEach(id=>{
+    document.getElementById(id).style.display = manualAcc ? '' : 'none';
+  });
 }
 
 // ─── Badge de cambio de tonalidad ────────────────────────────
@@ -1271,6 +1327,12 @@ function renderKCBadges(ks){
 }
 
 // ─── Info de instrumento ──────────────────────────────────────
+// Tonalidad en la que lee el instrumento ('' si no hay tónica)
+function instrReadsKey(io){
+  const baseKey = st.targKey || st.origKey;
+  return baseKey ? ALL_KEYS[(nIdx(baseKey) + io) % 12] : '';
+}
+
 function renderInstrInfo(ks, io){
   const el = document.getElementById('instrInfo');
   if(!st.instrKey){ el.innerHTML=''; return; }
@@ -1281,10 +1343,12 @@ function renderInstrInfo(ks, io){
 
   let html = `<strong>${name}</strong> (${st.instrKey}) — ${offLabel}`;
 
-  const baseKey = st.targKey || st.origKey;
-  if(baseKey){
-    const readsKey = idx2n(nIdx(baseKey) + io);
-    html += ` — Lee en <strong>${readsKey}</strong>`;
+  const readsKey = instrReadsKey(io);
+  if(readsKey){
+    html +=`<div class="instr-key"><span class="instr-key-lbl">Tonalidad transpuesta</span>`
+          + `<span class="instr-key-val">${keyLabel(readsKey)}</span></div>`;
+  } else {
+    html += `<div class="instr-key-hint">Elige la tónica arriba para ver en qué tonalidad te queda.</div>`;
   }
 
   el.innerHTML = html;
@@ -1448,7 +1512,7 @@ function buildCircle(){
     const hue = i * 30;
 
     // Sector exterior (mayor)
-    h += `<path class="cof-sec" d="${arcPath(cx,cy,OR1,OR2,a1,a2)}"
+    h += `<path class="cof-sec" id="cof-maj-${i}" onclick="selectCofKey(${i},'maj')" d="${arcPath(cx,cy,OR1,OR2,a1,a2)}"
       fill="hsl(${hue},42%,26%)" stroke="rgba(0,0,0,.28)" stroke-width="1.5"/>`;
 
     // Texto mayor
@@ -1461,7 +1525,7 @@ function buildCircle(){
       style="pointer-events:none">${d.major}</text>`;
 
     // Sector interior (menor)
-    h += `<path class="cof-sec" d="${arcPath(cx,cy,IR1,IR2,a1,a2)}"
+    h += `<path class="cof-sec" id="cof-min-${i}" onclick="selectCofKey(${i},'min')" d="${arcPath(cx,cy,IR1,IR2,a1,a2)}"
       fill="hsl(${hue},28%,19%)" stroke="rgba(0,0,0,.28)" stroke-width="1.5"/>`;
 
     // Texto menor + armadura
@@ -1490,11 +1554,101 @@ function buildCircle(){
   svg.innerHTML = h;
 }
 
+// ─── Escala y armadura en pentagrama ─────────────────────────
+const LETTERS   = ['C','D','E','F','G','A','B'];
+const LETTER_PC = [0,2,4,5,7,9,11];
+const SOLFEO    = {C:'Do',D:'Re',E:'Mi',F:'Fa',G:'Sol',A:'La',B:'Si'};
+const MINOR_SCALE = [0,2,3,5,7,8,10];
+// Tónica menor de cada sector del círculo (mismo orden que COF)
+const COF_MINOR = ['A','E','B','F#','C#','G#','Eb','Bb','F','C','G','D'];
+// Posición en el pentagrama (clave de sol) de cada alteración de la armadura
+const SIG_SHARPS = ['F5','C5','G5','D5','A4','E5','B4'];
+const SIG_FLATS  = ['B4','E5','A4','D5','G4','C5','F4'];
+let cofSel = null;
+
+// Paso diatónico absoluto: C4 = 28, E4 (línea inferior) = 30
+function diaStep(letter, octave){ return octave*7 + LETTERS.indexOf(letter); }
+
+// Deletrea la escala con letras consecutivas (Gb mayor → Gb Ab Bb Cb Db Eb F)
+function spellScale(tonic, ivs){
+  const l0 = LETTERS.indexOf(tonic[0]);
+  const t  = nIdx(tonic);
+  return [...ivs, 12].map((iv,k)=>{
+    const li   = (l0+k) % 7;
+    const diff = ((t + iv - LETTER_PC[li]) % 12 + 18) % 12 - 6;
+    const acc  = diff>0 ? '♯'.repeat(diff) : '♭'.repeat(-diff);
+    return { letter: LETTERS[li], acc, step: diaStep(LETTERS[li], 4) + (l0+k>=7 ? 7 : 0) };
+  });
+}
+
+const prettyNote = n => n.replace('#','♯').replace('b','♭');
+function solfeoName(n){
+  const acc = n.includes('#') ? ' sostenido' : n.length>1 && n[1]==='b' ? ' bemol' : '';
+  return SOLFEO[n[0]] + acc;
+}
+
+function staffSVG(notes, sigCount, sigType){
+  const W=440, H=170, S=12;        // S: distancia entre líneas
+  const yBot = 104;                // línea inferior (E4)
+  const y = step => yBot - (step-30)*S/2;
+  const line = '#cbd5e1', ink = '#f0e8d0';
+  let h = '';
+  for(let k=0;k<5;k++) h += `<line x1="8" x2="${W-8}" y1="${yBot-k*S}" y2="${yBot-k*S}" stroke="${line}" stroke-opacity=".55" stroke-width="1"/>`;
+  h += `<text x="10" y="${yBot+S*0.2}" font-size="${S*7.2}" fill="${ink}" font-family="'Noto Music','Segoe UI Symbol','Apple Symbols',serif">𝄞</text>`;
+
+  // Armadura
+  const sigPos = (sigType==='sharp' ? SIG_SHARPS : SIG_FLATS).slice(0, sigCount);
+  sigPos.forEach((p,k)=>{
+    const st_ = diaStep(p[0], +p[1]);
+    const glyph = sigType==='sharp' ? '♯' : '♭';
+    const dy = sigType==='sharp' ? 0 : -S*0.3;
+    h += `<text x="${66+k*12}" y="${y(st_)+dy}" font-size="${S*1.8}" fill="${ink}" text-anchor="middle" dominant-baseline="central" font-family="system-ui,sans-serif">${glyph}</text>`;
+  });
+
+  // Notas (redondas) sin alteraciones: las da la armadura
+  const x0 = 78 + sigCount*12 + 10;
+  const dx = (W - 24 - x0) / (notes.length - 1);
+  notes.forEach((n,k)=>{
+    const cx = x0 + k*dx, cy = y(n.step);
+    for(let s=28; s>=n.step; s-=2) h += `<line x1="${cx-S}" x2="${cx+S}" y1="${y(s)}" y2="${y(s)}" stroke="${line}" stroke-opacity=".7"/>`;
+    for(let s=40; s<=n.step; s+=2) h += `<line x1="${cx-S}" x2="${cx+S}" y1="${y(s)}" y2="${y(s)}" stroke="${line}" stroke-opacity=".7"/>`;
+    const tonic = k===0 || k===notes.length-1;
+    const col = tonic ? '#f0b429' : ink;
+    h += `<ellipse cx="${cx}" cy="${cy}" rx="${S*.68}" ry="${S*.47}" transform="rotate(-20 ${cx} ${cy})" fill="none" stroke="${col}" stroke-width="2.2"/>`;
+    h += `<text x="${cx}" y="${H-12}" text-anchor="middle" font-size="14" font-weight="700" fill="${col}" font-family="system-ui,sans-serif">${n.letter}${n.acc}</text>`;
+  });
+  return `<svg class="cof-staff" viewBox="0 0 ${W} ${H}">${h}</svg>`;
+}
+
+function selectCofKey(i, mode){
+  cofSel = {i, mode};
+  document.querySelectorAll('#cofSVG .cof-sec.sel').forEach(el=>el.classList.remove('sel'));
+  const sec = document.getElementById(`cof-${mode}-${i}`);
+  sec.classList.add('sel');
+
+  const tonic = mode==='maj' ? COF[i].keyVal : COF_MINOR[i];
+  const notes = spellScale(tonic, mode==='maj' ? MAJOR_SCALE : MINOR_SCALE);
+  const sigCount = i<=5 ? i : 12-i;
+  const sigType  = i<=5 ? 'sharp' : 'flat';
+  const sigNotes = (sigType==='sharp' ? SIG_SHARPS : SIG_FLATS).slice(0,sigCount)
+                     .map(p=>p[0]+(sigType==='sharp'?'♯':'♭'));
+  const modeTxt = mode==='maj' ? 'mayor' : 'menor';
+  const sigTxt  = sigCount ? `${sigCount} ${sigType==='sharp'?'sostenido':'bemol'}${sigCount>1?(sigType==='sharp'?'s':'es'):''}: ${sigNotes.join(' ')}` : 'sin alteraciones';
+
+  document.getElementById('cofScale').innerHTML =
+    `<div class="cof-scale-title">${prettyNote(tonic)} ${modeTxt} <span style="color:#94a3b8;font-weight:500">(${solfeoName(tonic)} ${modeTxt})</span></div>`
+  + `<div class="cof-scale-sub">Armadura: ${sigTxt}${mode==='min'?' · escala menor natural':''}</div>`
+  + staffSVG(notes, sigCount, sigType);
+}
+
 function toggleCircle(){
   const m = document.getElementById('circleModal');
   const opening = !m.classList.contains('open');
   m.classList.toggle('open');
-  if(opening) buildCircle();
+  if(opening){
+    buildCircle();
+    if(cofSel) selectCofKey(cofSel.i, cofSel.mode);
+  }
 }
 
 function onModalBg(e){

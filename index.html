@@ -161,17 +161,22 @@
     }
 
     /* ── Transponer button ───────────────────────────── */
-    .btn-row { display: flex; justify-content: center; margin-bottom: 12px; }
+    .btn-row { display: flex; gap: 10px; margin-bottom: 12px; }
 
     .btn-trans {
       background: linear-gradient(135deg, rgba(240,180,41,.18), rgba(240,180,41,.07));
       color: var(--accent);
       border: 1px solid rgba(240,180,41,.35);
-      border-radius: 24px;
-      padding: 10px 30px;
+      border-radius: 8px;
+      padding: 12px 14px;
+      flex: 1; line-height: 1.25;
       font-size: .9rem; font-weight: 700; letter-spacing: .4px;
       cursor: pointer;
       transition: background .2s, transform .15s;
+    }
+    .btn-trans.on {
+      background: linear-gradient(135deg, rgba(240,180,41,.34), rgba(240,180,41,.18));
+      border-color: rgba(240,180,41,.7);
     }
     .btn-trans:hover {
       background: linear-gradient(135deg, rgba(240,180,41,.28), rgba(240,180,41,.14));
@@ -364,8 +369,7 @@
       .hdr h1    { font-size: 1.5rem; }
       #instrOut  { font-size: 1.1rem; }
       .ikey      { min-width: 46px; }
-      .btn-row   { display: block; }
-      .btn-trans { width: 100%; padding: 14px 20px; font-size: 1rem; }
+      .btn-trans { padding: 13px 8px; font-size: .88rem; }
     }
 
     /* ── Botón flotante Círculo de Quintas ───── */
@@ -523,6 +527,8 @@
       border-radius: 5px; padding: 3px 10px;
       white-space: nowrap;
     }
+
+    .shift-badge:empty { display: none; }
 
     /* ── Controles del preview ───────────────────── */
     .preview-ctrl {
@@ -738,10 +744,30 @@ Fmaj7   Em7b5  A7    Dm"
     ></textarea>
   </div>
 
-  <!-- ─── 2. Transponer button ───────────────────────── -->
+  <!-- ─── 1.5. Vista previa ────────────────────────────── -->
+  <div class="card">
+    <div class="qp-hdr">
+      <span class="clabel">Vista previa</span>
+    </div>
+    <div class="out-controls" style="margin-bottom:8px;">
+      <button class="btn btn-deg" id="btnDegQP" onclick="toggleDeg()" title="Mostrar grados">I ii</button>
+      <span class="sep-ln"></span>
+      <button class="btn" onclick="adjSizeQP(-1)">A−</button>
+      <button class="btn" onclick="adjSizeQP(+1)">A+</button>
+      <button class="btn btn-copy" id="btnCopyQP" onclick="copyQP()" title="Copiar"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+    </div>
+    <div id="quickOut" class="quick-out">
+      <span class="empty-sm">Escribe acordes arriba...</span>
+    </div>
+  </div>
+
+  <!-- ─── 2. Botones: cambiar tonalidad / transponer a instrumento ── -->
   <div class="btn-row">
     <button class="btn-trans" id="btnTrans" onclick="toggleKeyChange()">
       ▼ Cambiar tonalidad
+    </button>
+    <button class="btn-trans" id="btnInstr" onclick="toggleInstr()">
+      ▼ Transponer a instrumento
     </button>
   </div>
 
@@ -780,13 +806,6 @@ Fmaj7   Em7b5  A7    Dm"
     </div>
   </div>
 
-  <!-- ─── 4. Transponer a instrumento button ────────── -->
-  <div class="btn-row">
-    <button class="btn-trans" id="btnInstr" onclick="toggleInstr()">
-      ▼ Transponer a instrumento
-    </button>
-  </div>
-
   <!-- ─── 5. Transponer a instrumento (collapsible) ── -->
   <div class="collapse" id="collapseInstr">
     <div class="card2">
@@ -814,23 +833,6 @@ Fmaj7   Em7b5  A7    Dm"
       <div id="instrOut">
         <div class="empty">Los acordes para el instrumento aparecerán aquí...</div>
       </div>
-    </div>
-  </div>
-
-  <!-- ─── 1.5. Vista previa ────────────────────────────── -->
-  <div class="card">
-    <div class="qp-hdr">
-      <span class="clabel">Vista previa</span>
-    </div>
-    <div class="out-controls" style="margin-bottom:8px;">
-      <button class="btn btn-deg" id="btnDegQP" onclick="toggleDeg()" title="Mostrar grados">I ii</button>
-      <span class="sep-ln"></span>
-      <button class="btn" onclick="adjSizeQP(-1)">A−</button>
-      <button class="btn" onclick="adjSizeQP(+1)">A+</button>
-      <button class="btn btn-copy" id="btnCopyQP" onclick="copyQP()" title="Copiar"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
-    </div>
-    <div id="quickOut" class="quick-out">
-      <span class="empty-sm">Escribe acordes arriba...</span>
     </div>
   </div>
 
@@ -1358,16 +1360,18 @@ function renderInstrInfo(ks, io){
 function toggleKeyChange(){
   st.kcOpen = !st.kcOpen;
   document.getElementById('collapseKC').classList.toggle('open', st.kcOpen);
-  document.getElementById('btnTrans').innerHTML =
-    st.kcOpen ? '▲ Cerrar tonalidad' : '▼ Cambiar tonalidad';
+  const b = document.getElementById('btnTrans');
+  b.textContent = (st.kcOpen ? '▲' : '▼') + ' Cambiar tonalidad';
+  b.classList.toggle('on', st.kcOpen);
 }
 
 // ─── Toggle Transponer a instrumento ─────────────────────────
 function toggleInstr(){
   st.instrOpen = !st.instrOpen;
   document.getElementById('collapseInstr').classList.toggle('open', st.instrOpen);
-  document.getElementById('btnInstr').innerHTML =
-    st.instrOpen ? '▲ Cerrar instrumento' : '▼ Transponer a instrumento';
+  const b = document.getElementById('btnInstr');
+  b.textContent = (st.instrOpen ? '▲' : '▼') + ' Transponer a instrumento';
+  b.classList.toggle('on', st.instrOpen);
 }
 
 // ─── Handlers de selects ──────────────────────────────────────

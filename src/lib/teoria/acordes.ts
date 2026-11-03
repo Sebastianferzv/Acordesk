@@ -10,30 +10,42 @@ const modulo12 = (n: number) => ((n % 12) + 12) % 12;
 /** Tónicas mayores que ofrece AcorDesk, en orden cromático. */
 export const TONALIDADES = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"] as const;
 
-export const RELATIVA_MENOR: Record<string, string> = {
-  C: "Am", Db: "Bbm", D: "Bm", Eb: "Cm", E: "C#m", F: "Dm",
-  Gb: "Ebm", G: "Em", Ab: "Fm", A: "F#m", Bb: "Gm", B: "G#m",
-};
+/** Tónicas menores, en orden cromático. Se escriben con "m": "Am", "F#m". */
+export const TONALIDADES_MENORES = ["Cm", "C#m", "Dm", "Ebm", "Em", "Fm", "F#m", "Gm", "G#m", "Am", "Bbm", "Bm"] as const;
 
-/** C G D A E B se escriben con sostenidos; F Bb Eb Ab Db Gb con bemoles. */
+export const esMenor = (tonalidad: string) => tonalidad.endsWith("m");
+
+/** Nota de la tónica, sin la "m" de menor. */
+export const raizTonalidad = (tonalidad: string) => (esMenor(tonalidad) ? tonalidad.slice(0, -1) : tonalidad);
+
+/** Tonalidad mayor o menor con esa clase de altura. */
+export const tonalidadDeAltura = (pc: number, menor = false): string =>
+  (menor ? TONALIDADES_MENORES : TONALIDADES)[modulo12(pc)];
+
+/** Mayor con la misma armadura (Am → C). */
+export const relativaMayor = (tonalidad: string) =>
+  esMenor(tonalidad) ? tonalidadDeAltura(claseDeAltura(raizTonalidad(tonalidad)) + 3) : tonalidad;
+
+/** La misma tonalidad (mismo modo) movida unos semitonos. */
+export const moverTonalidad = (tonalidad: string, semitonos: number) =>
+  tonalidadDeAltura(claseDeAltura(raizTonalidad(tonalidad)) + semitonos, esMenor(tonalidad));
+
+/** C G D A E B se escriben con sostenidos; F Bb Eb Ab Db Gb con bemoles. Las menores, como su relativa. */
 const TONALIDADES_SOSTENIDOS = new Set(["C", "G", "D", "A", "E", "B"]);
 
 export function preferenciaDeTonalidad(tonalidad: string): Preferencia {
-  return TONALIDADES_SOSTENIDOS.has(tonalidad) ? "sostenidos" : "bemoles";
+  return TONALIDADES_SOSTENIDOS.has(relativaMayor(tonalidad)) ? "sostenidos" : "bemoles";
 }
-
-/** Tónica de TONALIDADES con esa clase de altura. */
-export const tonalidadDeAltura = (pc: number) => TONALIDADES[modulo12(pc)];
 
 /** Semitonos (0 … 11) para ir de una tónica a otra. */
 export function semitonosEntre(desde: string, hasta: string): number {
   if (!desde || !hasta) return 0;
-  return modulo12(claseDeAltura(hasta) - claseDeAltura(desde));
+  return modulo12(claseDeAltura(raizTonalidad(hasta)) - claseDeAltura(raizTonalidad(desde)));
 }
 
 /** Tonalidad en la que lee un instrumento en `claveInstrumento` una canción en `tonalidad` (concierto). */
 export function tonalidadParaInstrumento(tonalidad: string, claveInstrumento: string): string {
-  return tonalidadDeAltura(claseDeAltura(tonalidad) + desplazamientoInstrumento(claveInstrumento));
+  return moverTonalidad(tonalidad, desplazamientoInstrumento(claveInstrumento));
 }
 
 // ── Instrumentos (las 12 claves posibles) ────────────────────────
@@ -143,9 +155,9 @@ export function alturasAcorde(texto: string, semitonos = 0): number[] | null {
 
 const ESCALA_MAYOR = [0, 2, 4, 5, 7, 9, 11];
 
-/** Clases de altura de la escala mayor de la tónica. */
-export function alturasTonalidad(tonica: string): Set<number> {
-  const t = claseDeAltura(tonica);
+/** Clases de altura de la tonalidad (en menor, la menor natural: las mismas notas que su relativa). */
+export function alturasTonalidad(tonalidad: string): Set<number> {
+  const t = claseDeAltura(relativaMayor(tonalidad));
   return new Set(ESCALA_MAYOR.map((i) => modulo12(t + i)));
 }
 
@@ -157,13 +169,16 @@ export function notasFuera(texto: string, tonica: string): number | null {
   return alturas.filter((a) => !escala.has(a)).length;
 }
 
-const GRADOS = ["I", "bII", "II", "bIII", "III", "IV", "bV", "V", "bVI", "VI", "bVII", "VII"];
+const GRADOS_MAYOR = ["I", "bII", "II", "bIII", "III", "IV", "bV", "V", "bVI", "VI", "bVII", "VII"];
+// En menor se cuenta desde la menor natural: III, VI y VII ya son de la tonalidad.
+const GRADOS_MENOR = ["I", "bII", "II", "III", "#III", "IV", "bV", "V", "VI", "#VI", "VII", "#VII"];
 
 /** Grado romano del acorde en la tonalidad; en minúscula si es menor o disminuido. */
-export function gradoAcorde(texto: string, tonica: string): string {
+export function gradoAcorde(texto: string, tonalidad: string): string {
   const a = leerAcorde(texto);
-  if (!a || !tonica) return "";
-  const grado = GRADOS[modulo12(claseDeAltura(a.raiz) - claseDeAltura(tonica))];
+  if (!a || !tonalidad) return "";
+  const grados = esMenor(tonalidad) ? GRADOS_MENOR : GRADOS_MAYOR;
+  const grado = grados[modulo12(claseDeAltura(a.raiz) - claseDeAltura(raizTonalidad(tonalidad)))];
   const q = a.calidad;
   const menor =
     (q.startsWith("m") && !q.toLowerCase().startsWith("maj")) ||

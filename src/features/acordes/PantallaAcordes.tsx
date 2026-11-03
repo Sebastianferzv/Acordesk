@@ -3,9 +3,11 @@
 import { useState, type ReactNode } from "react";
 import {
   CLAVES_INSTRUMENTO,
-  RELATIVA_MENOR,
+  esMenor,
+  raizTonalidad,
   semitonosEntre,
   TONALIDADES,
+  TONALIDADES_MENORES,
   tonalidadParaInstrumento,
 } from "@/lib/teoria/acordes";
 import { desplazamientoInstrumento, textoNota } from "@/lib/teoria/notas";
@@ -25,23 +27,30 @@ import { ControlesSalida, SalidaAcordes, textoParaCopiar } from "./SalidaAcordes
 
 type HojaAbierta = "canciones" | "circulo" | "diccionario" | "ayuda" | null;
 
-const etiquetaTonalidad = (t: string) => `${textoNota(t, "letras")} / ${textoNota(RELATIVA_MENOR[t], "letras")}`;
+const etiquetaTonalidad = (t: string) => `${textoNota(raizTonalidad(t), "letras")} ${esMenor(t) ? "menor" : "mayor"}`;
 
-/** Tonalidad mayor / relativa menor, con ♭ y ♯ dibujados. */
+/** "C mayor", "A menor", con ♭ y ♯ dibujados. */
 function NombreTonalidad({ tonalidad }: { tonalidad: string }) {
   return (
-    <>
-      <NombreNota nota={tonalidad} /> / <NombreNota nota={RELATIVA_MENOR[tonalidad].slice(0, -1)} />m
-    </>
+    <span>
+      <NombreNota nota={raizTonalidad(tonalidad)} /> {esMenor(tonalidad) ? "menor" : "mayor"}
+    </span>
   );
 }
 
-function SelectorTonalidad({ valor, onCambiar, vacio, disabled, etiqueta }: {
+const GRUPOS = [
+  { modo: "mayor", etiqueta: "Mayores", tonalidades: TONALIDADES },
+  { modo: "menor", etiqueta: "Menores", tonalidades: TONALIDADES_MENORES },
+] as const;
+
+function SelectorTonalidad({ valor, onCambiar, vacio, disabled, etiqueta, modo }: {
   valor: string;
   onCambiar: (t: string) => void;
   vacio: string;
   disabled?: boolean;
   etiqueta: string;
+  /** Solo ofrece tonalidades de ese modo. */
+  modo?: "mayor" | "menor";
 }) {
   return (
     <select
@@ -52,10 +61,14 @@ function SelectorTonalidad({ valor, onCambiar, vacio, disabled, etiqueta }: {
       className={cx(clasesEntrada, "h-11 w-auto pr-8 font-semibold disabled:opacity-40", !valor && !disabled && "border-amarillo")}
     >
       <option value="">{vacio}</option>
-      {TONALIDADES.map((t) => (
-        <option key={t} value={t}>
-          {etiquetaTonalidad(t)}
-        </option>
+      {GRUPOS.filter((g) => !modo || g.modo === modo).map((g) => (
+        <optgroup key={g.modo} label={g.etiqueta}>
+          {g.tonalidades.map((t) => (
+            <option key={t} value={t}>
+              {etiquetaTonalidad(t)}
+            </option>
+          ))}
+        </optgroup>
       ))}
     </select>
   );
@@ -146,7 +159,8 @@ export function PantallaAcordes() {
                 valor={t.tonica}
                 etiqueta="Tónica de la canción"
                 vacio="—"
-                onCambiar={(v) => cambiar({ tonica: v, ...(v ? {} : { nuevaTonica: "" }) })}
+                // La nueva tónica conserva el modo: si cambia de mayor a menor, se reinicia.
+                onCambiar={(v) => cambiar({ tonica: v, ...(v && esMenor(v) === esMenor(t.nuevaTonica) ? {} : { nuevaTonica: "" }) })}
               />
             </label>
             <textarea
@@ -217,6 +231,7 @@ export function PantallaAcordes() {
                     etiqueta="Nueva tónica"
                     vacio="— Sin cambio —"
                     disabled={!t.tonica}
+                    modo={esMenor(t.tonica) ? "menor" : "mayor"}
                     onCambiar={(v) => cambiar({ nuevaTonica: v })}
                   />
                 </div>
@@ -254,34 +269,47 @@ export function PantallaAcordes() {
         {t.abiertos.instrumento && (
           <Bloque tituloDeColor titulo="Transponer a instrumento" acento={{ forma: "semicirculo", color: "azul" }} className="animate-aparecer">
             <div className="space-y-3 p-4">
-              <div className="grid grid-cols-6 gap-1.5">
-                {CLAVES_INSTRUMENTO.map((i) => {
-                  const activo = i.clave === t.instrumento;
-                  return (
-                    <button
-                      key={i.clave}
-                      type="button"
-                      aria-pressed={activo}
-                      onClick={() => cambiar({ instrumento: i.clave })}
-                      className={cx(
-                        "flex h-12 flex-col items-center justify-center border-2 leading-none transition-colors",
-                        activo ? "border-azul bg-azul text-sobre-color" : "border-sutil bg-fondo text-tinta",
-                      )}
-                    >
-                      <NombreNota nota={i.clave} className="text-base font-bold" />
-                      <span className={cx("mt-0.5 text-[0.55rem] whitespace-nowrap", activo ? "opacity-90" : "text-tinta-suave")}>
-                        {i.nombre || " "}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
+              <button
+                type="button"
+                aria-expanded={t.verClaves}
+                onClick={() => cambiar({ verClaves: !t.verClaves })}
+                className="flex w-full items-center gap-2 border-2 border-azul bg-superficie px-3 py-2 text-left text-sm text-tinta-suave"
+              >
+                <span>
+                  <b className="text-tinta">{CLAVES_INSTRUMENTO.find((i) => i.clave === t.instrumento)?.nombre || "Instrumento"}</b> en{" "}
+                  <NombreNota nota={t.instrumento} /> —{" "}
+                  {semisInstrumento === 0 ? "sin transposición" : `+${semisInstrumento} semitonos`}
+                </span>
+                <span className="etiqueta ml-auto flex items-center gap-1.5 text-azul">
+                  {t.verClaves ? "Ocultar" : "Cambiar"}
+                  <span aria-hidden className="text-xs">{t.verClaves ? "▲" : "▼"}</span>
+                </span>
+              </button>
 
-              <p className="text-sm text-tinta-suave">
-                <b className="text-tinta">{CLAVES_INSTRUMENTO.find((i) => i.clave === t.instrumento)?.nombre || "Instrumento"}</b> en{" "}
-                <NombreNota nota={t.instrumento} /> —{" "}
-                {semisInstrumento === 0 ? "sin transposición" : `+${semisInstrumento} semitonos`}
-              </p>
+              {t.verClaves && (
+                <div className="grid grid-cols-6 gap-1.5">
+                  {CLAVES_INSTRUMENTO.map((i) => {
+                    const activo = i.clave === t.instrumento;
+                    return (
+                      <button
+                        key={i.clave}
+                        type="button"
+                        aria-pressed={activo}
+                        onClick={() => cambiar({ instrumento: i.clave })}
+                        className={cx(
+                          "flex h-12 flex-col items-center justify-center border-2 leading-none transition-colors",
+                          activo ? "border-azul bg-azul text-sobre-color" : "border-sutil bg-fondo text-tinta",
+                        )}
+                      >
+                        <NombreNota nota={i.clave} className="text-base font-bold" />
+                        <span className={cx("mt-0.5 text-[0.55rem] whitespace-nowrap", activo ? "opacity-90" : "text-tinta-suave")}>
+                          {i.nombre || " "}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
 
               {tonalidadInstrumento ? (
                 <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 rounded-[var(--radio)] bg-azul px-4 py-3 text-sobre-color">

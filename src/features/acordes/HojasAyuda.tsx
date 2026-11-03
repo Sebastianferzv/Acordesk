@@ -44,7 +44,7 @@ function SeccionConAcento({ titulo, children, acento }: PropsSeccion) {
 }
 
 const Muestra = ({ clase, children }: { clase: string; children: ReactNode }) => (
-  <span className={`inline-block border-2 px-2 py-0.5 text-xs font-semibold ${clase}`}>{children}</span>
+  <span className={`inline-block rounded-[4px] border-2 border-[#000] px-2 py-0.5 text-xs font-semibold ${clase}`}>{children}</span>
 );
 
 export function HojaAyuda({ abierta, onCerrar }: { abierta: boolean; onCerrar: () => void }) {
@@ -55,23 +55,23 @@ export function HojaAyuda({ abierta, onCerrar }: { abierta: boolean; onCerrar: (
         <p>Traductor de acordes. Escribes los acordes de una canción en concert pitch y la app los transpone a cualquier tonalidad o instrumento.</p>
       </Seccion>
       <Seccion titulo="Tónica de la canción">
-        <p>Elige la tónica junto a los acordes. Con ella se activan los colores, los grados y la escritura en <b>♯ o ♭</b> según la tonalidad.</p>
+        <p>Elige la tónica junto a los acordes, <b>mayor o menor</b>. Con ella se activan los colores, los grados y la escritura en <b>♯ o ♭</b> según la tonalidad.</p>
       </Seccion>
       <Seccion titulo="Colores de los acordes">
         <p>Según cuántas notas del acorde quedan fuera de la tonalidad:</p>
         <div className="flex flex-wrap gap-2">
-          <Muestra clase="border-transparent bg-hundido text-tinta">Diatónico</Muestra>
-          <Muestra clase="border-transparent bg-amarillo text-sobre-amarillo">1 fuera</Muestra>
-          <Muestra clase="border-rojo text-rojo">2 fuera</Muestra>
-          <Muestra clase="border-transparent bg-rojo text-sobre-color">3 o más</Muestra>
+          <Muestra clase="bg-azul text-sobre-color">En la tonalidad</Muestra>
+          <Muestra clase="bg-amarillo text-sobre-amarillo">1 fuera</Muestra>
+          <Muestra clase="bg-fondo text-rojo">2 fuera</Muestra>
+          <Muestra clase="bg-rojo text-sobre-color">3 o más</Muestra>
         </div>
         <p>Toca un acorde para ver sus notas; las que quedan fuera de la tonalidad salen en rojo.</p>
       </Seccion>
       <Seccion titulo="Sostenidos o bemoles">
-        <p>Cada recuadro escribe según su tonalidad: <b>C G D A E B</b> en sostenidos y <b>F B♭ E♭ A♭ D♭ G♭</b> en bemoles. Los botones ♭/♯ aparecen solo cuando no hay tónica.</p>
+        <p>Cada recuadro escribe según su tonalidad: <b>C G D A E B</b> en sostenidos y <b>F B♭ E♭ A♭ D♭ G♭</b> en bemoles (las menores, como su relativa mayor). Los botones ♭/♯ aparecen solo cuando no hay tónica.</p>
       </Seccion>
       <Seccion titulo="Grados (I ii III…)">
-        <p>El botón <code>I ii</code> muestra el grado romano sobre cada acorde. Mayúscula = mayor o dominante, minúscula = menor o disminuido. <code>b</code> indica grado cromático (ej: <code>bVII</code>).</p>
+        <p>El botón <code>I ii</code> muestra el grado romano sobre cada acorde. Mayúscula = mayor o dominante, minúscula = menor o disminuido. <code>b</code> indica grado cromático (ej: <code>bVII</code>). En menor se cuenta desde la menor natural: en La menor, <code>F</code> es <code>VI</code> y <code>E7</code> es <code>V</code>.</p>
       </Seccion>
       <Seccion titulo="Cambiar tonalidad">
         <p>Abre <b>Cambiar tonalidad</b> y elige la nueva tónica. Los acordes se transponen ahí sin tocar la vista previa.</p>

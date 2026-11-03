@@ -5,15 +5,15 @@ import {
   alturasAcorde,
   alturasTonalidad,
   gradoAcorde,
+  moverTonalidad,
   notasFuera,
   preferenciaDeTonalidad,
   separarLinea,
-  tonalidadDeAltura,
   transponerAcorde,
   transponerTexto,
   type Acorde,
 } from "@/lib/teoria/acordes";
-import { claseDeAltura, nombreSimple, type Preferencia } from "@/lib/teoria/notas";
+import { nombreSimple, type Preferencia } from "@/lib/teoria/notas";
 import { useAviso } from "@/ui/Aviso";
 import { Chip } from "@/ui/Chip";
 import { cx } from "@/ui/cx";
@@ -35,13 +35,12 @@ interface Props {
 
 /** Color de cada acorde según cuántas notas quedan fuera de la tonalidad. */
 const COLOR_FUERA = [
-  "border-transparent bg-hundido text-tinta",
-  "border-transparent bg-amarillo text-sobre-amarillo",
-  "border-rojo bg-transparent text-rojo",
-  "border-transparent bg-rojo text-sobre-color",
+  "bg-azul text-sobre-color",
+  "bg-amarillo text-sobre-amarillo",
+  "bg-fondo text-rojo",
+  "bg-rojo text-sobre-color",
 ];
-const colorAcorde = (fuera: number | null) =>
-  fuera === null ? "border-sutil bg-transparent text-tinta" : COLOR_FUERA[Math.min(fuera, 3)];
+const colorAcorde = (fuera: number | null) => (fuera === null ? "bg-hundido text-tinta" : COLOR_FUERA[Math.min(fuera, 3)]);
 
 /** Acorde con ♭ y ♯ dibujados. */
 export function TextoAcorde({ acorde }: { acorde: Acorde }) {
@@ -87,7 +86,7 @@ export function SalidaAcordes({ texto, semitonos, tonica, tonalidadSalida, prefe
                       type="button"
                       onClick={() => setTocado(tocado === id ? null : id)}
                       className={cx(
-                        "inline-flex flex-col items-center rounded-md border-2 px-[0.35em] py-[0.08em] transition-transform active:translate-y-px",
+                        "inline-flex flex-col items-center rounded-[4px] border-2 border-[#000] px-[0.35em] py-[0.08em] transition-transform active:translate-y-px",
                         colorAcorde(tonica ? notasFuera(p.texto, tonica) : null),
                         tocado === id && "outline-2 outline-offset-1 outline-tinta",
                       )}
@@ -120,7 +119,7 @@ function NotasDelAcorde({ texto, semitonos, tonica, pref }: { texto: string; sem
   const acorde = transponerAcorde(texto, semitonos, pref);
   const alturas = alturasAcorde(texto, semitonos);
   // La tonalidad también se mueve: una nota está "en tonalidad" igual antes y después de transponer.
-  const escala = tonica ? alturasTonalidad(tonalidadDeAltura(claseDeAltura(tonica) + semitonos)) : null;
+  const escala = tonica ? alturasTonalidad(moverTonalidad(tonica, semitonos)) : null;
   return (
     <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 border-t-2 border-sutil pt-2.5 text-sm">
       <span className="font-bold">{acorde && <TextoAcorde acorde={acorde} />}</span>
@@ -136,7 +135,6 @@ function NotasDelAcorde({ texto, semitonos, tonica, pref }: { texto: string; sem
       ) : (
         <span className="text-tinta-suave italic">calidad no reconocida</span>
       )}
-      {escala && <span className="etiqueta ml-auto text-tinta-suave">rojo = fuera de la tonalidad</span>}
     </div>
   );
 }

@@ -87,6 +87,20 @@ describe("análisis", () => {
     expect(gradoAcorde("Fmaj7", "C")).toBe("IV");
   });
 
+  it("entiende tonalidades menores", () => {
+    expect(gradoAcorde("Am", "Am")).toBe("i");
+    expect(gradoAcorde("Dm7", "Am")).toBe("iv");
+    expect(gradoAcorde("E7", "Am")).toBe("V");
+    expect(gradoAcorde("F", "Am")).toBe("VI");
+    expect(gradoAcorde("G", "Am")).toBe("VII");
+    expect(notasFuera("Dm7", "Am")).toBe(0);
+    expect(notasFuera("E7", "Am")).toBe(1);
+    expect(preferenciaDeTonalidad("Dm")).toBe("bemoles");
+    expect(preferenciaDeTonalidad("Em")).toBe("sostenidos");
+    expect(semitonosEntre("Am", "Cm")).toBe(3);
+    expect(tonalidadParaInstrumento("Gm", "Eb")).toBe("Em");
+  });
+
   it("separa acordes de texto", () => {
     expect(separarLinea("Am, hola").map((p) => p.tipo)).toEqual(["acorde", "espacio", "texto"]);
   });

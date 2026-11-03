@@ -13,6 +13,8 @@ export interface Trabajo {
   verGrados: boolean;
   tamanos: { vista: number; tonalidad: number; instrumento: number };
   abiertos: { tonalidad: boolean; instrumento: boolean };
+  /** Muestra la grilla de claves en "Transponer a instrumento". */
+  verClaves: boolean;
 }
 
 export const TRABAJO_INICIAL: Trabajo = {
@@ -25,6 +27,7 @@ export const TRABAJO_INICIAL: Trabajo = {
   verGrados: false,
   tamanos: { vista: 1.15, tonalidad: 1.15, instrumento: 1.45 },
   abiertos: { tonalidad: false, instrumento: false },
+  verClaves: true,
 };
 
 export const almacenTrabajo = crearAlmacenLocal<Trabajo>("acordesk_actual", TRABAJO_INICIAL, (v) => {

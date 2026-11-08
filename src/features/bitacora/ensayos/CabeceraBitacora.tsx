@@ -26,8 +26,8 @@ export function CabeceraBitacora({ hoy }: { hoy: string | null }) {
         </h1>
         <div className="mb-1.5 flex shrink-0 flex-col items-center gap-1.5" aria-hidden>
           <Forma tipo="circulo" relleno="rojo" trazo="ninguno" tamano={18} />
-          <Forma tipo="triangulo" relleno="amarillo" trazo="ninguno" tamano={18} />
-          <Forma tipo="cuadrado" relleno="azul" trazo="ninguno" tamano={18} />
+          <Forma tipo="nota" relleno="amarillo" trazo="ninguno" tamano={18} />
+          <Forma tipo="calendario" relleno="azul" trazo="ninguno" tamano={18} />
         </div>
       </div>
       <div className="mt-5 border-b-2 border-sutil" />

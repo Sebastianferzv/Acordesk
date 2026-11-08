@@ -15,6 +15,7 @@
   --rojo: #cf3427;
   --amarillo: #f2b42c;
   --azul: #1e4fa3;
+  --morado: #7a3c9e;
   --sobre-color: #fbf7ee;
   --sobre-amarillo: #16130f;
   /* Redondeo de toda la app: botones, campos, tarjetas y listas. */
@@ -33,6 +34,7 @@
   --rojo: #d9473a;
   --amarillo: #e8b440;
   --azul: #4a78d4;
+  --morado: #a77bd8;
   --sobre-color: #fbf7ee;
   --sobre-amarillo: #16130f;
   color-scheme: dark;
@@ -49,6 +51,7 @@
   --color-rojo: var(--rojo);
   --color-amarillo: var(--amarillo);
   --color-azul: var(--azul);
+  --color-morado: var(--morado);
   --color-sobre-color: var(--sobre-color);
   --color-sobre-amarillo: var(--sobre-amarillo);
   --font-sans: var(--font-jost), ui-sans-serif, system-ui, sans-serif;

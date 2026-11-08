@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { CATALOGO, GRADOS_MAYOR, GRADOS_MENOR, escalaDelCatalogo } from "./catalogo";
-import { claseDeAltura, escribirEscala, formula, mejorTonica, textoNota, transponer } from "./notas";
+import { escribirEscala, formula, textoNota } from "./notas";
 
 const grados = (id: string) => escalaDelCatalogo(id)!.grados;
 
@@ -29,33 +29,6 @@ describe("escribirEscala", () => {
       expect(notas.every((n) => n !== "?"), e.id).toBe(true);
       expect(formula(e.grados).length, e.id).toBe(e.grados.length);
     }
-  });
-});
-
-describe("mejorTonica", () => {
-  it("elige la escritura con menos alteraciones", () => {
-    expect(mejorTonica(1, GRADOS_MAYOR, "sostenidos")).toBe("Db"); // Db mayor (5 b) y no C# (7 #)
-    expect(mejorTonica(1, GRADOS_MENOR, "bemoles")).toBe("C#"); // C# menor (4 #) y no Db menor
-    expect(mejorTonica(10, GRADOS_MAYOR, "sostenidos")).toBe("Bb");
-    expect(mejorTonica(9, GRADOS_MAYOR, "bemoles")).toBe("A");
-  });
-
-  it("en un empate decide la preferencia", () => {
-    expect(mejorTonica(6, GRADOS_MAYOR, "bemoles")).toBe("Gb");
-    expect(mejorTonica(6, GRADOS_MAYOR, "sostenidos")).toBe("F#");
-  });
-});
-
-describe("transposición", () => {
-  it("Do de concierto se escribe La para el saxo alto y Re para el tenor", () => {
-    expect(transponer(claseDeAltura("C"), "Eb")).toBe(claseDeAltura("A"));
-    expect(transponer(claseDeAltura("C"), "Bb")).toBe(claseDeAltura("D"));
-    expect(transponer(claseDeAltura("C"), "C")).toBe(0);
-  });
-
-  it("Fa sostenido mayor de concierto se escribe Mi bemol mayor (no Re sostenido) en el alto", () => {
-    const escrita = transponer(claseDeAltura("F#"), "Eb");
-    expect(mejorTonica(escrita, GRADOS_MAYOR, "sostenidos")).toBe("Eb");
   });
 });
 

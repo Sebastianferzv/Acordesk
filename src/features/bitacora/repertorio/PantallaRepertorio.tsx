@@ -41,7 +41,7 @@ export function PantallaRepertorio() {
 
   return (
     <>
-      <Encabezado titulo="Repertorio" forma={{ tipo: "triangulo", color: "amarillo" }} />
+      <Encabezado titulo="Repertorio" forma={{ tipo: "nota", color: "amarillo" }} />
       <div className="space-y-4 px-4 pt-5">
         <EntradaRapida placeholder="Nueva canción" etiquetaBoton="Agregar canción" onAgregar={crear} />
 

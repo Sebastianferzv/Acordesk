@@ -3,17 +3,11 @@ import { crearAlmacenLocal } from "@/lib/almacenLocal";
 export interface AjustesBitacora {
   /** Nombres de notas: C-D-E o Do-Re-Mi. */
   notacion: "letras" | "solfeo";
-  /** Tonalidad del instrumento para transponer (Eb = saxo alto). */
-  instrumento: string;
-  /** Preferencia para nombrar las tónicas alteradas (Db o C#). */
-  alteraciones: "bemoles" | "sostenidos";
   etiquetasRapidas: string[];
 }
 
 export const AJUSTES_POR_DEFECTO: AjustesBitacora = {
   notacion: "letras",
-  instrumento: "Eb",
-  alteraciones: "bemoles",
   etiquetasRapidas: ["Banda", "Solo", "Clase"],
 };
 

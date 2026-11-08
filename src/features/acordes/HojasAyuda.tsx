@@ -5,8 +5,8 @@ import { Hoja } from "@/ui/Hoja";
 // Cada sección toma una forma y un color, alternando los tres del Bauhaus.
 const ACENTOS: { forma: TipoForma; color: ColorBauhaus }[] = [
   { forma: "circulo", color: "rojo" },
-  { forma: "triangulo", color: "amarillo" },
-  { forma: "cuadrado", color: "azul" },
+  { forma: "circulo", color: "amarillo" },
+  { forma: "circulo", color: "azul" },
 ];
 
 /** Secciones de una hoja de ayuda, cada una con su acento de color. */

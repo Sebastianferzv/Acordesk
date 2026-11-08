@@ -1,89 +1,44 @@
 "use client";
 
 import { useState } from "react";
-import {
-  claseDeAltura,
-  desplazamientoInstrumento,
-  escribirEscala,
-  formula,
-  mejorTonica,
-  nombreInstrumento,
-  transponer,
-} from "@/lib/teoria/notas";
+import { TONALIDADES } from "@/lib/teoria/acordes";
+import { claseDeAltura, escribirEscala, formula } from "@/lib/teoria/notas";
 import { cx } from "@/ui/cx";
 import { NombreNota } from "@/ui/NombreNota";
 import { useAjustes } from "../ajustes/ajustes";
 import { Teclado } from "./Teclado";
 
-const PCS = Array.from({ length: 12 }, (_, i) => i);
-
-/**
- * Muestra una escala en cualquier tónica, en concierto o escrita para el instrumento.
- * La tónica elegida se guarda como sonido real: al cambiar de vista suena igual y solo cambia la escritura.
- */
+/** Muestra una escala en cualquier tónica. Las teclas negras se nombran en bemoles: D♭ E♭ G♭ A♭ B♭. */
 export function VisorEscala({ grados }: { grados: string[] }) {
-  const { notacion, instrumento, alteraciones } = useAjustes();
-  const [pcConcierto, setPcConcierto] = useState(0);
-  const [vista, setVista] = useState<"concierto" | "instrumento">(instrumento === "C" ? "concierto" : "instrumento");
-
-  const transpone = instrumento !== "C" && vista === "instrumento";
-  const pcVista = transpone ? transponer(pcConcierto, instrumento) : pcConcierto;
-  const tonica = mejorTonica(pcVista, grados, alteraciones);
+  const { notacion } = useAjustes();
+  const [tonica, setTonica] = useState<string>("C");
   const notas = escribirEscala(tonica, grados);
   const pasos = formula(grados);
 
-  const elegir = (pc: number) =>
-    setPcConcierto(transpone ? (pc - desplazamientoInstrumento(instrumento) + 12) % 12 : pc);
-
   return (
     <div className="space-y-5">
-      {instrumento !== "C" && (
-        <div role="radiogroup" aria-label="Vista" className="grid grid-cols-2 border-2 border-sutil">
-          {(["concierto", "instrumento"] as const).map((v) => (
-            <button
-              key={v}
-              type="button"
-              role="radio"
-              aria-checked={vista === v}
-              onClick={() => setVista(v)}
-              className={cx(
-                "etiqueta h-12 border-sutil first:border-r-2",
-                vista === v ? "bg-tinta text-fondo" : "bg-superficie",
-              )}
-            >
-              {v === "concierto" ? "Concierto" : nombreInstrumento(instrumento)}
-            </button>
-          ))}
-        </div>
-      )}
-
       <div>
         <p className="etiqueta mb-2 text-tinta-suave">Tónica</p>
         <div className="grid grid-cols-6 gap-1.5">
-          {PCS.map((pc) => {
-            const nombre = mejorTonica(pc, grados, alteraciones);
-            return (
-              <button
-                key={pc}
-                type="button"
-                aria-pressed={pc === pcVista}
-                onClick={() => elegir(pc)}
-                className={cx(
-                  "h-11 border-2 border-sutil text-[0.95rem] font-semibold",
-                  pc === pcVista ? "bg-rojo text-sobre-color" : "bg-superficie",
-                )}
-              >
-                <NombreNota nota={nombre} notacion={notacion} />
-              </button>
-            );
-          })}
+          {TONALIDADES.map((t) => (
+            <button
+              key={t}
+              type="button"
+              aria-pressed={t === tonica}
+              onClick={() => setTonica(t)}
+              className={cx(
+                "h-11 border-2 border-sutil text-[0.95rem] font-semibold",
+                t === tonica ? "bg-rojo text-sobre-color" : "bg-superficie",
+              )}
+            >
+              <NombreNota nota={t} notacion={notacion} />
+            </button>
+          ))}
         </div>
       </div>
 
       <div>
-        <p className="etiqueta mb-2 text-tinta-suave">
-          Notas{transpone ? ` · escritas para ${nombreInstrumento(instrumento).toLowerCase()}` : " · en concierto"}
-        </p>
+        <p className="etiqueta mb-2 text-tinta-suave">Notas</p>
         <ol className="flex flex-wrap gap-1.5">
           {notas.map((n, i) => (
             <li key={i} className="flex flex-col items-center">
@@ -104,13 +59,7 @@ export function VisorEscala({ grados }: { grados: string[] }) {
         </p>
       </div>
 
-      <Teclado notas={new Set(notas.map((n) => claseDeAltura(n)))} tonica={pcVista} className="w-full" />
-      {transpone && (
-        <p className="text-xs text-tinta-suave">
-          El teclado muestra las notas escritas. Suena igual que la escala de{" "}
-          <NombreNota nota={mejorTonica(pcConcierto, grados, alteraciones)} notacion={notacion} /> en concierto.
-        </p>
-      )}
+      <Teclado notas={new Set(notas.map((n) => claseDeAltura(n)))} tonica={claseDeAltura(tonica)} className="w-full" />
     </div>
   );
 }

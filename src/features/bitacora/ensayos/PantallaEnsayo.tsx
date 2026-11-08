@@ -133,7 +133,7 @@ function FichaEnsayo({ ensayo }: { ensayo: Ensayo }) {
           </div>
         </Bloque>
 
-        <Bloque titulo="Minuta" acento={{ forma: "cuadrado", color: "azul" }}>
+        <Bloque titulo="Minuta" acento={{ forma: "lapiz", color: "azul" }}>
           <div className="space-y-3 p-4">
             <CampoTexto
               valor={ensayo.titulo}
@@ -154,7 +154,7 @@ function FichaEnsayo({ ensayo }: { ensayo: Ensayo }) {
         <SeccionCanciones ensayo={ensayo} />
         <SeccionAprendizajes ensayo={ensayo} />
 
-        <Bloque titulo="Links" acento={{ forma: "cuadrado", color: "azul" }}>
+        <Bloque titulo="Links" acento={{ forma: "enlace", color: "azul" }}>
           <div className="p-4">
             <ListaEnlaces enlaces={ensayo.links} onCambiar={(links) => guardar({ links })} />
           </div>

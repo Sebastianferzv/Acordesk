@@ -35,12 +35,12 @@ export function SeccionAprendizajes({ ensayo }: { ensayo: Ensayo }) {
   };
 
   return (
-    <Bloque titulo="Aprendizajes" acento={{ forma: "triangulo", color: "rojo" }}>
+    <Bloque titulo="Aprendizajes" acento={{ forma: "bombilla", color: "rojo" }}>
       <div className="space-y-2 p-4">
         {ensayo.aprendizajes.map((a) => (
           <div key={a.id} className="border-2 border-sutil bg-fondo">
             <div className="flex items-start gap-2 p-2.5">
-              <Forma tipo="triangulo" relleno="amarillo" trazo="ninguno" tamano={14} className="mt-1 shrink-0" />
+              <Forma tipo="circulo" relleno="amarillo" trazo="ninguno" tamano={10} className="mt-1.5 shrink-0" />
               <p className="flex-1 leading-snug">{a.texto}</p>
               <button
                 type="button"

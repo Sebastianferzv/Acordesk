@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useState, type ReactNode } from "react";
+import { usePathname } from "next/navigation";
+import type { ReactNode } from "react";
 import { useAhora } from "@/lib/useAhora";
 import { cx } from "@/ui/cx";
 import { IconoFlecha } from "@/ui/Iconos";
@@ -10,14 +10,11 @@ import { formatoReloj, tiempoTranscurrido } from "../datos/cronometro";
 import { useCronometro } from "../datos/hooks";
 import type { Cronometro } from "../datos/tipos";
 import { BarraNavegacion } from "./BarraNavegacion";
-import { HojaEnsayar } from "./HojaEnsayar";
 
-/** Estructura común del módulo: columna central, barra inferior, cronómetro y hoja "Ensayar". */
+/** Estructura común del módulo: columna central, barra inferior y cronómetro. */
 export function Marco({ children }: { children: ReactNode }) {
-  const [hojaAbierta, setHojaAbierta] = useState(false);
   const cronometro = useCronometro() ?? null;
   const ruta = usePathname();
-  const router = useRouter();
 
   const conMiniBarra = cronometro !== null && ruta !== "/bitacora/cronometro";
 
@@ -34,11 +31,7 @@ export function Marco({ children }: { children: ReactNode }) {
         </div>
       </div>
       {conMiniBarra && <MiniBarra cronometro={cronometro} />}
-      <BarraNavegacion
-        cronometro={cronometro}
-        onEnsayar={() => (cronometro ? router.push("/bitacora/cronometro") : setHojaAbierta(true))}
-      />
-      <HojaEnsayar abierta={hojaAbierta} onCerrar={() => setHojaAbierta(false)} />
+      <BarraNavegacion />
     </>
   );
 }

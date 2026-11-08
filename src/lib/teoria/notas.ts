@@ -68,11 +68,6 @@ export function escribirEscala(tonica: Nota | string, grados: string[]): string[
   });
 }
 
-/** Cantidad total de alteraciones de una lista de notas. */
-export function contarAlteraciones(notas: string[]): number {
-  return notas.reduce((total, n) => total + Math.abs(leerNota(n)?.alteracion ?? 0), 0);
-}
-
 /** Nombre más simple para una clase de altura (sin dobles alteraciones). */
 export function nombreSimple(pc: number, preferencia: Preferencia): string {
   const bemoles = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"];
@@ -80,26 +75,6 @@ export function nombreSimple(pc: number, preferencia: Preferencia): string {
   return (preferencia === "bemoles" ? bemoles : sostenidos)[modulo12(pc)];
 }
 
-/**
- * La mejor forma de escribir la tónica de una escala con esa clase de altura:
- * la que deja menos alteraciones en la escala completa (Re bemol mayor y no Do sostenido mayor;
- * Do sostenido menor y no Re bemol menor). Si empatan, decide la preferencia.
- */
-export function mejorTonica(pc: number, grados: string[], preferencia: Preferencia): string {
-  const candidatas: Nota[] = [];
-  for (let letra = 0; letra < 7; letra++) {
-    const alteracion = diferencia(pc - PC_NATURAL[letra]);
-    if (Math.abs(alteracion) <= 1) candidatas.push({ letra, alteracion });
-  }
-  const puntaje = (n: Nota) => {
-    const escala = escribirEscala(n, grados);
-    const dobles = escala.filter((x) => /bb|##/.test(x)).length;
-    const desempate = n.alteracion === 0 ? 0 : (n.alteracion < 0) === (preferencia === "bemoles") ? 0.5 : 0.6;
-    return contarAlteraciones(escala) + dobles * 10 + desempate;
-  };
-  candidatas.sort((a, b) => puntaje(a) - puntaje(b));
-  return escribirNota(candidatas[0]);
-}
 
 /** Pasos entre notas consecutivas (cerrando en la octava): T, S, T½… */
 export function formula(grados: string[]): string[] {
@@ -112,24 +87,11 @@ export function formula(grados: string[]): string[] {
 
 // ── Instrumentos transpositores ──────────────────────────────────
 
-export const INSTRUMENTOS = [
-  { clave: "C", nombre: "Concierto", detalle: "Piano, guitarra, flauta, voz" },
-  { clave: "Eb", nombre: "Saxo alto", detalle: "También saxo barítono (en Mi♭)" },
-  { clave: "Bb", nombre: "Saxo tenor", detalle: "También soprano, trompeta, clarinete (en Si♭)" },
-  { clave: "F", nombre: "Corno", detalle: "Corno francés (en Fa)" },
-] as const;
-
-export const nombreInstrumento = (clave: string) => INSTRUMENTOS.find((i) => i.clave === clave)?.nombre ?? clave;
-
 /** Semitonos a sumar al sonido real para obtener la nota escrita de un instrumento en `clave`. */
 export function desplazamientoInstrumento(clave: string): number {
   const pc = claseDeAltura(clave);
   return pc < 0 ? 0 : (12 - pc) % 12;
 }
-
-/** Clase de altura escrita para el instrumento, a partir de la de concierto. */
-export const transponer = (pcConcierto: number, claveInstrumento: string) =>
-  modulo12(pcConcierto + desplazamientoInstrumento(claveInstrumento));
 
 // ── Nombres ──────────────────────────────────────────────────────
 

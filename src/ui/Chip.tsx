@@ -1,12 +1,13 @@
 import type { ButtonHTMLAttributes } from "react";
 import { cx } from "./cx";
 
-export type TonoChip = "rojo" | "amarillo" | "azul" | "hundido";
+export type TonoChip = "rojo" | "amarillo" | "azul" | "morado" | "hundido";
 
 const LLENO: Record<TonoChip, string> = {
   rojo: "border-rojo bg-rojo text-sobre-color",
   amarillo: "border-amarillo bg-amarillo text-sobre-amarillo",
   azul: "border-azul bg-azul text-sobre-color",
+  morado: "border-morado bg-morado text-sobre-color",
   hundido: "border-transparent bg-hundido text-tinta",
 };
 
@@ -14,6 +15,7 @@ const BORDE: Record<TonoChip, string> = {
   rojo: "border-rojo bg-transparent text-tinta",
   amarillo: "border-amarillo bg-transparent text-tinta",
   azul: "border-azul bg-transparent text-tinta",
+  morado: "border-morado bg-transparent text-tinta",
   hundido: "border-transparent bg-hundido text-tinta",
 };
 

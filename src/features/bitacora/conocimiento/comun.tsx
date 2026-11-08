@@ -21,7 +21,7 @@ export function EncabezadoConocimiento() {
   ];
   return (
     <>
-      <Encabezado titulo="Conocimiento" forma={{ tipo: "semicirculo", color: "rojo" }} />
+      <Encabezado titulo="Conocimiento" forma={{ tipo: "libro", color: "rojo" }} />
       <nav aria-label="Secciones de conocimiento" className="mx-4 mt-4 grid grid-cols-2 border-2 border-sutil">
         {pestanas.map((p) => {
           const activa = ruta === p.href;

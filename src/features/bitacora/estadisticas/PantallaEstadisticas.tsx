@@ -83,7 +83,7 @@ export function PantallaEstadisticas() {
           <Cifra valor={String(mejorRacha(fechas))} unidad={mejorRacha(fechas) === 1 ? "día" : "días"} etiqueta="Mejor racha" borde arriba />
         </div>
 
-        <Bloque titulo="Tiempo de ensayo" acento={{ forma: "cuadrado", color: "azul" }}>
+        <Bloque titulo="Tiempo de ensayo" acento={{ forma: "reloj", color: "azul" }}>
           <div className="p-4">
             <div role="radiogroup" aria-label="Agrupar por" className="mb-4 grid grid-cols-2 border-2 border-sutil">
               {(["semanas", "meses"] as const).map((v) => (
@@ -111,7 +111,7 @@ export function PantallaEstadisticas() {
           </div>
         </Bloque>
 
-        <Bloque titulo="Horas por canción" acento={{ forma: "triangulo", color: "amarillo" }}>
+        <Bloque titulo="Horas por canción" acento={{ forma: "nota", color: "amarillo" }}>
           <div className="p-4">
             {porCancion.length === 0 ? (
               <p className="text-tinta-suave">Agrega canciones a tus ensayos para ver dónde va tu tiempo.</p>

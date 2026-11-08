@@ -1,13 +1,10 @@
 "use client";
 
-import { GRADOS_MAYOR, GRADOS_MENOR } from "@/lib/teoria/catalogo";
-import { claseDeAltura, mejorTonica, nombreInstrumento, textoNota, transponer } from "@/lib/teoria/notas";
+import { TONALIDADES, TONALIDADES_MENORES } from "@/lib/teoria/acordes";
+import { textoNota } from "@/lib/teoria/notas";
 import { Campo, clasesEntrada } from "@/ui/Campos";
 import { cx } from "@/ui/cx";
-import { NombreNota } from "@/ui/NombreNota";
 import { useAjustes } from "../ajustes/ajustes";
-
-const PCS = Array.from({ length: 12 }, (_, i) => i);
 
 /** Divide "Bbm" en tónica y modo. */
 export function leerTonalidad(tonalidad: string) {
@@ -20,17 +17,9 @@ interface Props {
   onCambiar: (tonalidad: string | undefined) => void;
 }
 
-/** Tonalidad en concierto, con su versión escrita para el instrumento elegido en Ajustes. */
+/** Tonalidad de la canción, en concierto. */
 export function TonalidadCancion({ tonalidad, onCambiar }: Props) {
-  const { notacion, instrumento, alteraciones } = useAjustes();
-  const opcion = (pc: number, menor: boolean) => mejorTonica(pc, menor ? GRADOS_MENOR : GRADOS_MAYOR, alteraciones) + (menor ? "m" : "");
-
-  let escrita: { tonica: string; menor: boolean } | null = null;
-  if (tonalidad && instrumento !== "C") {
-    const { tonica, menor } = leerTonalidad(tonalidad);
-    const pc = transponer(claseDeAltura(tonica), instrumento);
-    escrita = { tonica: mejorTonica(pc, menor ? GRADOS_MENOR : GRADOS_MAYOR, alteraciones), menor };
-  }
+  const { notacion } = useAjustes();
 
   return (
     <div>
@@ -42,35 +31,21 @@ export function TonalidadCancion({ tonalidad, onCambiar }: Props) {
         >
           <option value="">Sin indicar</option>
           <optgroup label="Mayores">
-            {PCS.map((pc) => {
-              const v = opcion(pc, false);
-              return (
-                <option key={v} value={v}>
-                  {textoNota(v, notacion)} mayor
-                </option>
-              );
-            })}
+            {TONALIDADES.map((v) => (
+              <option key={v} value={v}>
+                {textoNota(v, notacion)} mayor
+              </option>
+            ))}
           </optgroup>
           <optgroup label="Menores">
-            {PCS.map((pc) => {
-              const v = opcion(pc, true);
-              return (
-                <option key={v} value={v}>
-                  {textoNota(v.slice(0, -1), notacion)} menor
-                </option>
-              );
-            })}
+            {TONALIDADES_MENORES.map((v) => (
+              <option key={v} value={v}>
+                {textoNota(v.slice(0, -1), notacion)} menor
+              </option>
+            ))}
           </optgroup>
         </select>
       </Campo>
-      {escrita && (
-        <p className="mt-2 text-sm">
-          Para {nombreInstrumento(instrumento).toLowerCase()}:{" "}
-          <strong>
-            <NombreNota nota={escrita.tonica} notacion={notacion} /> {escrita.menor ? "menor" : "mayor"}
-          </strong>
-        </p>
-      )}
     </div>
   );
 }

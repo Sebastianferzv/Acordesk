@@ -26,7 +26,7 @@ export function PantallaEscala() {
       <>
         <Encabezado titulo="Escala" volverA="/bitacora/escalas" />
         <EstadoVacio titulo="Esta escala no existe">
-          <Link href="/bitacora/escalas" className="underline">Volver a tus escalas</Link>
+          <Link href="/bitacora/escalas" className="underline">Volver a las escalas</Link>
         </EstadoVacio>
       </>
     );
@@ -43,7 +43,7 @@ function FichaEscala({ escala }: { escala: Escala }) {
     await escalas.borrar(escala.id);
     router.push("/bitacora/escalas");
     avisar({
-      texto: `«${nombreEscala(escala)}» quitada de tus escalas.`,
+      texto: `«${nombreEscala(escala)}» eliminada.`,
       accion: { etiqueta: "Deshacer", alHacer: () => void escalas.restaurar(escala.id) },
     });
   };
@@ -52,12 +52,17 @@ function FichaEscala({ escala }: { escala: Escala }) {
     <>
       <Encabezado
         titulo={nombreEscala(escala)}
-        forma={{ tipo: "semicirculo", color: catalogo ? "rojo" : "azul" }}
+        forma={{ tipo: "libro", color: catalogo ? "rojo" : "azul" }}
         volverA="/bitacora/escalas"
-        subtitulo={catalogo?.familia ?? "Escala propia"}
+        subtitulo={catalogo?.familia ?? "Creada por mí"}
       />
       <div className="space-y-5 px-4 pt-5">
-        {catalogo && <p className="leading-snug">{catalogo.uso}</p>}
+        {catalogo && (
+          <div className="space-y-1 leading-snug">
+            <p className="font-semibold">{catalogo.descripcion}</p>
+            <p className="text-tinta-suave">{catalogo.uso}</p>
+          </div>
+        )}
 
         <Bloque titulo="Visor" acento={{ forma: "circulo", color: "rojo" }}>
           <div className="p-4">
@@ -66,7 +71,7 @@ function FichaEscala({ escala }: { escala: Escala }) {
         </Bloque>
 
         {!catalogo && (
-          <Bloque titulo="Grados" acento={{ forma: "cuadrado", color: "azul" }}>
+          <Bloque titulo="Grados" acento={{ forma: "nota", color: "azul" }}>
             <div className="space-y-4 p-4">
               <Campo etiqueta="Nombre">
                 <CampoTexto valor={escala.nombre} onGuardar={(t) => t && void escalas.actualizar(escala.id, { nombre: t })} />
@@ -79,7 +84,7 @@ function FichaEscala({ escala }: { escala: Escala }) {
           </Bloque>
         )}
 
-        <Bloque titulo="Cómo la uso" acento={{ forma: "triangulo", color: "amarillo" }}>
+        <Bloque titulo="Cómo la uso" acento={{ forma: "lapiz", color: "amarillo" }}>
           <div className="p-4">
             <CampoTexto
               valor={escala.comoUsarla}
@@ -93,11 +98,13 @@ function FichaEscala({ escala }: { escala: Escala }) {
 
         <TipsDe escalaId={escala.id} />
 
-        <div className="flex justify-end pt-2">
-          <Boton variante="secundario" onClick={() => void eliminar()}>
-            Quitar de mis escalas
-          </Boton>
-        </div>
+        {!catalogo && (
+          <div className="flex justify-end pt-2">
+            <Boton variante="secundario" onClick={() => void eliminar()}>
+              Eliminar escala
+            </Boton>
+          </div>
+        )}
       </div>
     </>
   );

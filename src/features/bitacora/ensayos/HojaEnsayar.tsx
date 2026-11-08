@@ -14,7 +14,7 @@ interface Props {
   onCerrar: () => void;
 }
 
-/** Hoja del botón central: iniciar el cronómetro o registrar un ensayo. */
+/** Hoja de "Nuevo ensayo": iniciar el cronómetro o registrar un ensayo. */
 export function HojaEnsayar({ abierta, onCerrar }: Props) {
   const router = useRouter();
 
@@ -34,17 +34,17 @@ export function HojaEnsayar({ abierta, onCerrar }: Props) {
   };
 
   return (
-    <Hoja abierta={abierta} onCerrar={onCerrar} titulo="Ensayar">
+    <Hoja abierta={abierta} onCerrar={onCerrar} titulo="Nuevo ensayo">
       <div className="grid gap-3">
         <Opcion
-          forma="circulo"
+          forma="reloj"
           color="rojo"
           titulo="Iniciar cronómetro"
           detalle="Mide el ensayo mientras tocas."
           onClick={() => void iniciar()}
         />
         <Opcion
-          forma="cuadrado"
+          forma="lapiz"
           color="azul"
           titulo="Registrar ensayo"
           detalle="Anota el de hoy o uno que ya hiciste."

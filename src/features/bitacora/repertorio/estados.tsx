@@ -17,7 +17,7 @@ export function cambiosDeEstado(estado: EstadoCancion, hoy: string): Partial<Can
 
 export function MarcaEstado({ estado, tamano = 18 }: { estado: EstadoCancion; tamano?: number }) {
   const e = datosEstado(estado);
-  return <Forma tipo="triangulo" relleno={e.color} trazo="ninguno" tamano={tamano} titulo={e.etiqueta} />;
+  return <Forma tipo="circulo" relleno={e.color} trazo="ninguno" tamano={tamano} titulo={e.etiqueta} />;
 }
 
 interface Props {
@@ -45,7 +45,7 @@ export function SelectorEstado({ estado, onCambiar, compacto }: Props) {
               activo ? "bg-tinta text-fondo" : "bg-superficie",
             )}
           >
-            <Forma tipo="triangulo" relleno={e.color} trazo="ninguno" tamano={compacto ? 11 : 13} />
+            <Forma tipo="circulo" relleno={e.color} trazo="ninguno" tamano={compacto ? 11 : 13} />
             {e.etiqueta}
           </button>
         );

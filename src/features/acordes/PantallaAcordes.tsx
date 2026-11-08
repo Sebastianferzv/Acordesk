@@ -115,7 +115,7 @@ export function PantallaAcordes() {
     <div className="mx-auto min-h-[calc(100dvh-3rem)] w-full max-w-[640px] bg-fondo pb-[calc(3rem+env(safe-area-inset-bottom))] sm:border-x-2 sm:border-sutil">
       <Encabezado
         titulo="AcorDesk"
-        forma={{ tipo: "circulo", color: "rojo" }}
+        forma={{ tipo: "circulo", color: "morado" }}
         acciones={
           <button
             type="button"
@@ -177,7 +177,7 @@ export function PantallaAcordes() {
           </div>
         </Bloque>
 
-        <Bloque tituloDeColor titulo="Vista previa" acento={{ forma: "cuadrado", color: "amarillo" }}>
+        <Bloque tituloDeColor titulo="Vista previa" acento={{ forma: "ojo", color: "amarillo" }}>
           <div className="space-y-3 p-4">
             {controles("vista", 0.15, 0, t.tonica)}
             <SalidaAcordes
@@ -212,7 +212,7 @@ export function PantallaAcordes() {
           <Bloque
             tituloDeColor
             titulo="Cambiar tonalidad"
-            acento={{ forma: "triangulo", color: "amarillo" }}
+            acento={{ forma: "flechas", color: "amarillo" }}
             className="animate-aparecer"
           >
             <div className="space-y-3 p-4">
@@ -267,7 +267,7 @@ export function PantallaAcordes() {
         )}
 
         {t.abiertos.instrumento && (
-          <Bloque tituloDeColor titulo="Transponer a instrumento" acento={{ forma: "semicirculo", color: "azul" }} className="animate-aparecer">
+          <Bloque tituloDeColor titulo="Transponer a instrumento" acento={{ forma: "nota", color: "azul" }} className="animate-aparecer">
             <div className="space-y-3 p-4">
               <button
                 type="button"

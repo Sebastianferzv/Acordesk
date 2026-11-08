@@ -116,12 +116,13 @@ export function PantallaMuestrario() {
         <Seccion titulo="Formas">
           <div className="flex flex-wrap items-center gap-3">
             <Forma tipo="circulo" relleno="rojo" trazo="ninguno" tamano={40} />
-            <Forma tipo="cuadrado" relleno="azul" trazo="ninguno" tamano={40} />
-            <Forma tipo="triangulo" relleno="amarillo" trazo="ninguno" tamano={40} />
-            <Forma tipo="semicirculo" relleno="tinta" trazo="ninguno" tamano={40} />
+            <Forma tipo="calendario" relleno="azul" trazo="ninguno" tamano={40} />
+            <Forma tipo="nota" relleno="amarillo" trazo="ninguno" tamano={40} />
+            <Forma tipo="libro" relleno="rojo" trazo="ninguno" tamano={40} />
+            <Forma tipo="bombilla" relleno="amarillo" trazo="ninguno" tamano={40} />
             <Forma tipo="barras" relleno="multicolor" tamano={40} grosor={2} />
             <Forma tipo="circulo" tamano={40} />
-            <Forma tipo="triangulo" tamano={40} />
+            <Forma tipo="lapiz" tamano={40} />
           </div>
         </Seccion>
 
@@ -202,7 +203,7 @@ export function PantallaMuestrario() {
         </Seccion>
 
         <Seccion titulo="Bloques, hoja y avisos">
-          <Bloque titulo="Aprendizajes" acento={{ forma: "triangulo", color: "amarillo" }}>
+          <Bloque titulo="Aprendizajes" acento={{ forma: "bombilla", color: "amarillo" }}>
             <p className="p-4">Respirar antes del puente y no apurar el final de la frase.</p>
           </Bloque>
           <div className="grid grid-cols-2 gap-2">

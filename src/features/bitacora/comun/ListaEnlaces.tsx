@@ -116,7 +116,7 @@ function TarjetaEnlace({ enlace, onQuitar }: { enlace: Enlace; onQuitar: () => v
     <div className="flex items-center border-2 border-sutil bg-superficie">
       <a href={a.url} target="_blank" rel="noopener noreferrer" className="flex min-w-0 flex-1 items-center gap-3 p-3">
         <Forma
-          tipo={a.tipo === "instagram" ? "circulo" : "cuadrado"}
+          tipo={a.tipo === "instagram" ? "circulo" : "enlace"}
           relleno={a.tipo === "instagram" ? "rojo" : "azul"}
           trazo="ninguno"
           tamano={20}

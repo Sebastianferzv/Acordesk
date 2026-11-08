@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRef, useState, type ReactNode } from "react";
 import { crearAlmacenLocal } from "@/lib/almacenLocal";
 import { fechaLocal } from "@/lib/fechas";
-import { INSTRUMENTOS } from "@/lib/teoria/notas";
 import { useAviso } from "@/ui/Aviso";
 import { Bloque } from "@/ui/Bloque";
 import { Boton } from "@/ui/Boton";
@@ -14,7 +13,6 @@ import { Chip } from "@/ui/Chip";
 import { cx } from "@/ui/cx";
 import { Encabezado } from "@/ui/Encabezado";
 import { IconoCerrar, IconoFlecha } from "@/ui/Iconos";
-import { NombreNota } from "@/ui/NombreNota";
 import { guardarTema, useTema, type Tema } from "@/ui/tema";
 import { cargarDatosDeEjemplo } from "../datos/ejemplo";
 import { pedirPersistencia } from "../datos/persistencia";
@@ -93,33 +91,7 @@ export function PantallaAjustes() {
     <>
       <Encabezado titulo="Ajustes" volverA="/bitacora" />
       <div className="space-y-5 px-4 pt-5">
-        <Bloque titulo="Instrumento" acento={{ forma: "circulo", color: "rojo" }}>
-          <div className="space-y-2 p-4">
-            {INSTRUMENTOS.map((i) => (
-              <button
-                key={i.clave}
-                type="button"
-                aria-pressed={ajustes.instrumento === i.clave}
-                onClick={() => guardarAjustes({ instrumento: i.clave })}
-                className={cx(
-                  "flex w-full items-center gap-3 border border-sutil p-3 text-left",
-                  ajustes.instrumento === i.clave ? "bg-tinta text-fondo" : "bg-superficie",
-                )}
-              >
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-full border border-current text-sm font-bold">
-                  <NombreNota nota={i.clave} notacion={ajustes.notacion} />
-                </span>
-                <span>
-                  <span className="block font-semibold">{i.nombre}</span>
-                  <span className={cx("block text-xs", ajustes.instrumento === i.clave ? "opacity-80" : "text-tinta-suave")}>{i.detalle}</span>
-                </span>
-              </button>
-            ))}
-            <p className="pt-1 text-xs text-tinta-suave">Las escalas y tonalidades se muestran también escritas para este instrumento.</p>
-          </div>
-        </Bloque>
-
-        <Bloque titulo="Notas" acento={{ forma: "cuadrado", color: "azul" }}>
+        <Bloque titulo="Notas" acento={{ forma: "nota", color: "azul" }}>
           <div className="space-y-3 p-4">
             <Segmentado
               etiqueta="Notación"
@@ -130,20 +102,10 @@ export function PantallaAjustes() {
                 { valor: "solfeo", etiqueta: "Do Re Mi" },
               ]}
             />
-            <Segmentado
-              etiqueta="Alteraciones preferidas"
-              valor={ajustes.alteraciones}
-              onCambiar={(alteraciones) => guardarAjustes({ alteraciones })}
-              opciones={[
-                { valor: "bemoles", etiqueta: <>Bemoles (<NombreNota nota="Db" notacion={ajustes.notacion} />)</> },
-                { valor: "sostenidos", etiqueta: <>Sostenidos (<NombreNota nota="C#" notacion={ajustes.notacion} />)</> },
-              ]}
-            />
-            <p className="text-xs text-tinta-suave">La preferencia solo decide los empates, como F♯ o G♭ mayor.</p>
           </div>
         </Bloque>
 
-        <Bloque titulo="Etiquetas rápidas" acento={{ forma: "triangulo", color: "amarillo" }}>
+        <Bloque titulo="Etiquetas rápidas" acento={{ forma: "etiqueta", color: "amarillo" }}>
           <div className="space-y-3 p-4">
             <div className="flex flex-wrap gap-2">
               {ajustes.etiquetasRapidas.map((e) => (
@@ -171,7 +133,7 @@ export function PantallaAjustes() {
           </div>
         </Bloque>
 
-        <Bloque titulo="Respaldo" acento={{ forma: "cuadrado", color: "azul" }}>
+        <Bloque titulo="Respaldo" acento={{ forma: "descarga", color: "azul" }}>
           <div className="space-y-3 p-4">
             <p className="text-sm leading-snug">
               Tus datos viven solo en este dispositivo. Exporta un respaldo de vez en cuando, y úsalo para pasar
@@ -209,7 +171,7 @@ export function PantallaAjustes() {
           </div>
         </Bloque>
 
-        <Bloque titulo="Almacenamiento" acento={{ forma: "semicirculo", color: "rojo" }}>
+        <Bloque titulo="Almacenamiento" acento={{ forma: "disco", color: "rojo" }}>
           <div className="space-y-2 p-4 text-sm">
             <p>
               {almacenamiento?.persistente

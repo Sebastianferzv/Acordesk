@@ -61,7 +61,7 @@ function FichaCancion({ cancion }: { cancion: Cancion }) {
     <>
       <Encabezado
         titulo={cancion.nombre}
-        forma={{ tipo: "triangulo", color: datosEstado(cancion.estado).color }}
+        forma={{ tipo: "nota", color: datosEstado(cancion.estado).color }}
         volverA="/bitacora/repertorio"
         subtitulo={cancion.artista}
       />
@@ -76,13 +76,13 @@ function FichaCancion({ cancion }: { cancion: Cancion }) {
           />
         </div>
 
-        <Bloque titulo="Estado" acento={{ forma: "triangulo", color: datosEstado(cancion.estado).color }}>
+        <Bloque titulo="Estado" acento={{ forma: "circulo", color: datosEstado(cancion.estado).color }}>
           <div className="p-4">
             <SelectorEstado estado={cancion.estado} onCambiar={(e) => hoy && guardar(cambiosDeEstado(e, hoy))} />
           </div>
         </Bloque>
 
-        <Bloque titulo="Datos" acento={{ forma: "cuadrado", color: "azul" }}>
+        <Bloque titulo="Datos" acento={{ forma: "lista", color: "azul" }}>
           <div className="space-y-4 p-4">
             <Campo etiqueta="Nombre">
               <CampoTexto valor={cancion.nombre} onGuardar={(t) => t && guardar({ nombre: t })} />
@@ -102,7 +102,7 @@ function FichaCancion({ cancion }: { cancion: Cancion }) {
           </div>
         </Bloque>
 
-        <Bloque titulo="Links" acento={{ forma: "cuadrado", color: "azul" }}>
+        <Bloque titulo="Links" acento={{ forma: "enlace", color: "azul" }}>
           <div className="p-4">
             <ListaEnlaces enlaces={cancion.links} onCambiar={(links) => guardar({ links })} />
           </div>

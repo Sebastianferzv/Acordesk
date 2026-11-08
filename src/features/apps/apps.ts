@@ -12,8 +12,8 @@ export interface App {
 
 /** Apps de la barra superior, en orden. Para sumar una app: agregarla aquí y crear su carpeta en src/app. */
 export const APPS: App[] = [
-  { id: "acordes", nombre: "AcorDesk", raiz: "/acordes", forma: "circulo", color: "rojo" },
-  { id: "bitacora", nombre: "Bitácora", raiz: "/bitacora", forma: "cuadrado", color: "azul" },
+  { id: "acordes", nombre: "AcorDesk", raiz: "/acordes", forma: "circulo", color: "morado" },
+  { id: "bitacora", nombre: "Bitácora", raiz: "/bitacora", forma: "cuaderno", color: "azul" },
 ];
 
 export const appDeRuta = (ruta: string) =>

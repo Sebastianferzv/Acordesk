@@ -16,7 +16,7 @@ export function TipsDe({ escalaId, cancionId }: { escalaId?: string; cancionId?:
   const propios = todos.filter((t) => (escalaId ? t.escalaId === escalaId : t.cancionId === cancionId));
 
   return (
-    <Bloque titulo="Tips" acento={{ forma: "semicirculo", color: "rojo" }}>
+    <Bloque titulo="Tips" acento={{ forma: "bombilla", color: "rojo" }}>
       <div className="space-y-2 p-4">
         {propios.map((t) => (
           <TarjetaTip key={t.id} tip={t} referencias={referencias} onEditar={() => setEditando(t)} />

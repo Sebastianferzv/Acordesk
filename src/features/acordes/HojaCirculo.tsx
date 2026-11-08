@@ -19,7 +19,7 @@ function arco(r1: number, r2: number, a1: number, a2: number) {
 }
 const rad = (g: number) => (g * Math.PI) / 180;
 
-// Mayores en rojo, menores en azul.
+// Contorno rojo para las mayores y azul para las menores; la elegida se rellena.
 const COLOR = { mayor: "var(--rojo)", menor: "var(--azul)" };
 
 export function HojaCirculo({ abierta, onCerrar }: { abierta: boolean; onCerrar: () => void }) {
@@ -54,10 +54,10 @@ export function HojaCirculo({ abierta, onCerrar }: { abierta: boolean; onCerrar:
               >
                 <path
                   d={arco(r[0], r[1], a1, a2)}
-                  fill={activo ? "var(--tinta)" : COLOR[modo]}
-                  stroke={activo ? "var(--tinta)" : "none"}
-                  strokeWidth={3}
-                  className="transition-[filter] hover:brightness-110"
+                  fill={activo ? COLOR[modo] : "transparent"}
+                  stroke={COLOR[modo]}
+                  strokeWidth={2.5}
+                  className={activo ? undefined : "hover:fill-hundido"}
                 />
                 <text
                   x={x}
@@ -66,7 +66,7 @@ export function HojaCirculo({ abierta, onCerrar }: { abierta: boolean; onCerrar:
                   dominantBaseline="central"
                   fontSize={tam}
                   fontWeight={700}
-                  fill={activo ? "var(--fondo)" : "var(--sobre-color)"}
+                  fill={activo ? "var(--sobre-color)" : "var(--tinta)"}
                   style={{ pointerEvents: "none" }}
                 >
                   <NombreEnSvg nota={nota} />
@@ -79,7 +79,7 @@ export function HojaCirculo({ abierta, onCerrar }: { abierta: boolean; onCerrar:
                     textAnchor="middle"
                     dominantBaseline="central"
                     fontSize={8.5}
-                    fill={activo ? "var(--fondo)" : "var(--sobre-color)"}
+                    fill={activo ? "var(--sobre-color)" : "var(--tinta-suave)"}
                     fillOpacity={0.8}
                     style={{ pointerEvents: "none" }}
                   >

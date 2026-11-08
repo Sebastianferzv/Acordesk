@@ -2,17 +2,21 @@
 
 import { useLiveQuery } from "dexie-react-hooks";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { partesFecha } from "@/lib/fechas";
 import { useHoy } from "@/lib/useHoy";
+import { Boton } from "@/ui/Boton";
 import { EstadoVacio } from "@/ui/EstadoVacio";
 import { Forma } from "@/ui/Forma";
-import { IconoFlecha } from "@/ui/Iconos";
-import { useEnsayos, useGrabaciones } from "../datos/hooks";
+import { IconoFlecha, IconoMas } from "@/ui/Iconos";
+import { useCronometro, useEnsayos, useGrabaciones } from "../datos/hooks";
 import { diasDesdeUltimoRespaldo } from "../datos/respaldo";
 import type { Ensayo } from "../datos/tipos";
 import { formatoDuracion, rachaActual, resumenSemana } from "../estadisticas/calculos";
 import { CabeceraBitacora } from "./CabeceraBitacora";
 import { FilaEnsayo } from "./FilaEnsayo";
+import { HojaEnsayar } from "./HojaEnsayar";
 
 const DIAS_SIN_RESPALDO = 14;
 
@@ -21,6 +25,9 @@ export function PantallaEnsayos() {
   const ensayos = useEnsayos();
   const grabaciones = useGrabaciones() ?? [];
   const diasSinRespaldo = useLiveQuery(() => diasDesdeUltimoRespaldo(), []);
+  const cronometro = useCronometro() ?? null;
+  const router = useRouter();
+  const [hojaAbierta, setHojaAbierta] = useState(false);
 
   const pedirRespaldo =
     ensayos !== undefined &&
@@ -33,13 +40,22 @@ export function PantallaEnsayos() {
       <CabeceraBitacora hoy={hoy} />
       <div className="px-5 pt-6">
         <Resumen ensayos={ensayos ?? []} hoy={hoy} />
+        {/* Con un cronómetro andando, el botón lleva a él en vez de abrir otro ensayo. */}
+        <Boton
+          variante="rojo"
+          anchoCompleto
+          className="mt-3"
+          onClick={() => (cronometro ? router.push("/bitacora/cronometro") : setHojaAbierta(true))}
+        >
+          {cronometro ? "Ver cronómetro" : <><IconoMas tamano={18} /> Nuevo ensayo</>}
+        </Boton>
         {pedirRespaldo && (
           <Link
             href="/bitacora/ajustes"
             className="mt-3 flex items-center justify-between gap-3 border-2 border-sutil bg-superficie px-4 py-3.5 text-[0.95rem]"
           >
             <span className="flex items-center gap-2">
-              <Forma tipo="triangulo" relleno="rojo" trazo="ninguno" tamano={12} />
+              <Forma tipo="descarga" relleno="rojo" trazo="ninguno" tamano={16} />
               Haz un respaldo de tus datos
             </span>
             <IconoFlecha tamano={16} className="text-tinta-suave" />
@@ -64,12 +80,13 @@ export function PantallaEnsayos() {
         </h2>
         {ensayos === undefined ? null : ensayos.length === 0 ? (
           <EstadoVacio titulo="Tu bitácora está en blanco">
-            Toca el círculo rojo de abajo para registrar tu primer ensayo.
+            Toca «Nuevo ensayo» para registrar el primero.
           </EstadoVacio>
         ) : (
           <ListaPorMes ensayos={ensayos} />
         )}
       </section>
+      <HojaEnsayar abierta={hojaAbierta} onCerrar={() => setHojaAbierta(false)} />
     </>
   );
 }
@@ -121,7 +138,7 @@ function Resumen({ ensayos, hoy }: { ensayos: Ensayo[]; hoy: string | null }) {
       </div>
       <div className="border-l-2 border-sutil p-4">
         <p className="etiqueta flex items-center gap-2 text-tinta-suave">
-          <Forma tipo="cuadrado" relleno="azul" trazo="ninguno" tamano={10} />
+          <Forma tipo="calendario" relleno="azul" trazo="ninguno" tamano={14} />
           Esta semana
         </p>
         <p className="mt-3 text-[2.75rem] leading-none font-bold whitespace-nowrap tabular-nums">{formatoDuracion(semana.minutos)}</p>

@@ -52,7 +52,7 @@ export function SeccionCanciones({ ensayo }: { ensayo: Ensayo }) {
     .slice(0, 8);
 
   return (
-    <Bloque titulo="Canciones" acento={{ forma: "triangulo", color: "amarillo" }}>
+    <Bloque titulo="Canciones" acento={{ forma: "nota", color: "amarillo" }}>
       <div className="space-y-3 p-4">
         {ensayo.items.map((item) => {
           const c = porId.get(item.cancionId);
